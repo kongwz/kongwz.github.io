@@ -74,7 +74,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="unity shader," />
+  <meta name="keywords" content="Ugui," />
 
 
 
@@ -90,18 +90,18 @@
 
 
 
-<meta name="description" content="初学Shader记录一下 float4 tex2D(sampler2D samp, float2 s)  2D纹理采样，CG内置函数。内部实现分为以下几步：   用图片的宽高度乘以uv数值，得到像素坐标。widthPixel=samp.xs.x;heightPixel=samp.ys.y;  因为取到的数值基本上都是带有小数点的，也就是说不是一个整数，这个时候，需要看图片的过滤设置了。也就是Un">
-<meta name="keywords" content="unity shader">
+<meta name="description" content="###由于刚刚换了公司，所以现在正在接触新框架Entitas和UGUI，因为以前都是在使用NGUI，所以，现在每天感觉都在接触新的东西，可谓是每天都充满了挑战呀，哈哈。 ###今天做一个功能，类似与吃鸡游戏的小地图和大地图，功能大概包括周围人物怪物标识，场景物资标识，玩家和队友再地图上的标点和 自身与标点的划线、缩放、拖拽等 因为设计点击和拖拽，所以需要单独监听这两个事件，但是我发现UGUI 的事">
+<meta name="keywords" content="Ugui">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Unity-Shader-小记">
-<meta property="og:url" content="http://yoursite.com/2018/06/25/Unity-Shader-小记/index.html">
+<meta property="og:title" content="UGUI事件顺序">
+<meta property="og:url" content="http://yoursite.com/2018/06/05/Unity-Ugui/index.html">
 <meta property="og:site_name" content="Kelo&#39;s blog">
-<meta property="og:description" content="初学Shader记录一下 float4 tex2D(sampler2D samp, float2 s)  2D纹理采样，CG内置函数。内部实现分为以下几步：   用图片的宽高度乘以uv数值，得到像素坐标。widthPixel=samp.xs.x;heightPixel=samp.ys.y;  因为取到的数值基本上都是带有小数点的，也就是说不是一个整数，这个时候，需要看图片的过滤设置了。也就是Un">
+<meta property="og:description" content="###由于刚刚换了公司，所以现在正在接触新框架Entitas和UGUI，因为以前都是在使用NGUI，所以，现在每天感觉都在接触新的东西，可谓是每天都充满了挑战呀，哈哈。 ###今天做一个功能，类似与吃鸡游戏的小地图和大地图，功能大概包括周围人物怪物标识，场景物资标识，玩家和队友再地图上的标点和 自身与标点的划线、缩放、拖拽等 因为设计点击和拖拽，所以需要单独监听这两个事件，但是我发现UGUI 的事">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-06-25T10:34:12.136Z">
+<meta property="og:updated_time" content="2018-07-05T02:38:38.145Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Unity-Shader-小记">
-<meta name="twitter:description" content="初学Shader记录一下 float4 tex2D(sampler2D samp, float2 s)  2D纹理采样，CG内置函数。内部实现分为以下几步：   用图片的宽高度乘以uv数值，得到像素坐标。widthPixel=samp.xs.x;heightPixel=samp.ys.y;  因为取到的数值基本上都是带有小数点的，也就是说不是一个整数，这个时候，需要看图片的过滤设置了。也就是Un">
+<meta name="twitter:title" content="UGUI事件顺序">
+<meta name="twitter:description" content="###由于刚刚换了公司，所以现在正在接触新框架Entitas和UGUI，因为以前都是在使用NGUI，所以，现在每天感觉都在接触新的东西，可谓是每天都充满了挑战呀，哈哈。 ###今天做一个功能，类似与吃鸡游戏的小地图和大地图，功能大概包括周围人物怪物标识，场景物资标识，玩家和队友再地图上的标点和 自身与标点的划线、缩放、拖拽等 因为设计点击和拖拽，所以需要单独监听这两个事件，但是我发现UGUI 的事">
 
 
 
@@ -129,13 +129,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/06/25/Unity-Shader-小记/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/06/05/Unity-Ugui/"/>
 
 
 
 
 
-  <title>Unity-Shader-小记 | Kelo's blog</title>
+  <title>UGUI事件顺序 | Kelo's blog</title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -274,7 +274,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/25/Unity-Shader-小记/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/05/Unity-Ugui/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Kelo">
@@ -291,7 +291,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Unity-Shader-小记</h1>
+          <h1 class="post-title" itemprop="name headline">UGUI事件顺序</h1>
         
 
         <div class="post-meta">
@@ -303,8 +303,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-25T15:18:33+08:00">
-                2018-06-25
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-05T22:20:52+08:00">
+                2018-06-05
               </time>
             
 
@@ -326,8 +326,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/unity-shader/" itemprop="url" rel="index">
-                    <span itemprop="name">unity shader</span>
+                  <a href="/categories/Unity/" itemprop="url" rel="index">
+                    <span itemprop="name">Unity</span>
                   </a>
                 </span>
 
@@ -343,7 +343,7 @@
 
           
           
-             <span id="/2018/06/25/Unity-Shader-小记/" class="leancloud_visitors" data-flag-title="Unity-Shader-小记">
+             <span id="/2018/06/05/Unity-Ugui/" class="leancloud_visitors" data-flag-title="UGUI事件顺序">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -402,18 +402,19 @@
       
 
       
-        <ul>
-<li>初学Shader记录一下 <strong>float4 tex2D(sampler2D samp, float2 s)</strong></li>
+        <p>###由于刚刚换了公司，所以现在正在接触新框架Entitas和UGUI，因为以前都是在使用NGUI，所以，现在每天感觉都在接触新的东西，可谓是每天都充满了挑战呀，哈哈。</p>
+<p>###今天做一个功能，类似与吃鸡游戏的小地图和大地图，功能大概包括<em>周围人物怪物标识，场景物资标识，玩家和队友再地图上的标点和 自身与标点的划线、缩放、拖拽等</em></p>
+<p>因为设计点击和拖拽，所以需要单独监听这两个事件，但是我发现UGUI 的事件执行顺序是这样的<br><a id="more"></a><br>点击一下的事件执行顺序<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">OnPointerDown</span><br><span class="line">OnInitializePotentialDrag</span><br><span class="line">OnPointerEnter</span><br><span class="line">OnPointerUp</span><br><span class="line">OnPointerClick</span><br><span class="line">OnPointerExit</span><br></pre></td></tr></table></figure></p>
+<p>当我按下并拖动的事件执行顺序<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">OnPointerDown</span><br><span class="line">OnInitializePotentialDrag</span><br><span class="line">OnPointerEnter</span><br><span class="line">OnBeginDrag</span><br><span class="line">OnDrag</span><br><span class="line">OnPointerUp</span><br><span class="line">OnPointerClick</span><br><span class="line">OnEndDrag</span><br><span class="line">OnPointerExit</span><br></pre></td></tr></table></figure></p>
+<p>可以看出 当同一个物体我们同时监听它的点击事件和拖动事件的时候，是不能直接通过OnPointerClick或者OnPointerDown来得到的，因为当我们拖动的时候也会执行这两个事件，所以用以下解决方案。</p>
+<ul>
+<li>设置一个bool变量</li>
+<li>OnPointerDown事件把变量设为true</li>
+<li>OnDrag设为false，或者OnBeginDrag</li>
+<li>在OnPointerUp事件触发的时候判断这边变量是否为true，如果是true 则认为是点击，否则是拖动</li>
 </ul>
-<p>2D纹理采样，CG内置函数。<br>内部实现分为以下几步： </p>
-<ol>
-<li>用图片的宽高度乘以uv数值，得到像素坐标。widthPixel=samp.x<em>s.x;heightPixel=samp.y</em>s.y; </li>
-<li>因为取到的数值基本上都是带有小数点的，也就是说不是一个整数，这个时候，需要看图片的过滤设置了。也就是Unity3d的图片设置中的Filter Mode。 </li>
-<li>Filter Mode是Point，不过滤，就会取像素点最靠近的整数，也就是四舍五入，得到像素点的坐标，然后出去图片中，这个坐标的颜色。 </li>
-<li>双线性过滤，会取目标像素的附近4个像素，然后进行插值计算，得到平均颜色值，作为最终颜色。适合纹理由小放大过程中，出现的“马赛克”。 </li>
-<li>三线性过滤，在双线性过滤的基础上考虑到了深度LOD，会进行两次双线性过滤，来使不同的LOD等级纹理中，更加平滑的过渡。</li>
-</ol>
-
+<p>很简单，代码就不写了。<br>写一下测试代码吧。后续有机会再写一下关于Entitas的笔记。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br></pre></td><td class="code"><pre><span class="line">using UnityEngine;</span><br><span class="line">using UnityEngine.EventSystems;</span><br><span class="line"></span><br><span class="line">public class EventTest : MonoBehaviour,</span><br><span class="line">    IPointerClickHandler,</span><br><span class="line">    IPointerEnterHandler,</span><br><span class="line">    IPointerExitHandler,</span><br><span class="line">    IPointerDownHandler,</span><br><span class="line">    IPointerUpHandler,</span><br><span class="line">    IBeginDragHandler,</span><br><span class="line">    IDragHandler,</span><br><span class="line">    IInitializePotentialDragHandler,</span><br><span class="line">    IEndDragHandler,</span><br><span class="line">    IDropHandler,</span><br><span class="line">    IUpdateSelectedHandler,</span><br><span class="line">    ISelectHandler,</span><br><span class="line">    IDeselectHandler,</span><br><span class="line">    IScrollHandler,</span><br><span class="line">    IMoveHandler,</span><br><span class="line">    ISubmitHandler,</span><br><span class="line">    ICancelHandler</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">#region 鼠标指针类</span></span><br><span class="line">    //鼠标进入时响应</span><br><span class="line">    public void OnPointerEnter(PointerEventData eventData)</span><br><span class="line">    &#123;</span><br><span class="line">        Debug.Log(<span class="string">"OnPointerEnter"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //鼠标离开时响应</span><br><span class="line">    public void OnPointerExit(PointerEventData eventData)</span><br><span class="line">    &#123;</span><br><span class="line">        Debug.Log(<span class="string">"OnPointerExit"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //鼠标按下时响应</span><br><span class="line">    public void OnPointerDown(PointerEventData eventData)</span><br><span class="line">    &#123;</span><br><span class="line">        Debug.Log(<span class="string">"OnPointerDown"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //鼠标释放时响应</span><br><span class="line">    public void OnPointerUp(PointerEventData eventData)</span><br><span class="line">    &#123;</span><br><span class="line">        Debug.Log(<span class="string">"OnPointerUp"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //鼠标点击时响应</span><br><span class="line">    public void OnPointerClick(PointerEventData eventData)</span><br><span class="line">    &#123;</span><br><span class="line">        Debug.Log(<span class="string">"OnPointerClick"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">#endregion</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">#region 拖拽类</span></span><br><span class="line">    //初始化拖拽</span><br><span class="line">    public void OnInitializePotentialDrag(PointerEventData eventData)</span><br><span class="line">    &#123;</span><br><span class="line">        Debug.Log(<span class="string">"OnInitializePotentialDrag"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //开始拖拽</span><br><span class="line">    public void OnBeginDrag(PointerEventData eventData)</span><br><span class="line">    &#123;</span><br><span class="line">        Debug.Log(<span class="string">"OnBeginDrag"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //拖拽中</span><br><span class="line">    public void OnDrag(PointerEventData eventData)</span><br><span class="line">    &#123;</span><br><span class="line">        Debug.Log(<span class="string">"OnDrag"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //拖拽结束</span><br><span class="line">    public void OnEndDrag(PointerEventData eventData)</span><br><span class="line">    &#123;</span><br><span class="line">        Debug.Log(<span class="string">"OnEndDrag"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //拖拽释放</span><br><span class="line">    public void OnDrop(PointerEventData eventData)</span><br><span class="line">    &#123;</span><br><span class="line">        Debug.Log(<span class="string">"OnDrop"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">#endregion</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">#region 点选类</span></span><br><span class="line">    //当物体被选中时每帧触发</span><br><span class="line">    public void OnUpdateSelected(BaseEventData eventData)</span><br><span class="line">    &#123;</span><br><span class="line">        Debug.Log(<span class="string">"OnUpdateSelected"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //选中物体</span><br><span class="line">    public void OnSelect(BaseEventData eventData)</span><br><span class="line">    &#123;</span><br><span class="line">        Debug.Log(<span class="string">"OnSelect"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //未选中物体</span><br><span class="line">    public void OnDeselect(BaseEventData eventData)</span><br><span class="line">    &#123;</span><br><span class="line">        Debug.Log(<span class="string">"OnDeselect"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">#endregion</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">#region 输入类</span></span><br><span class="line">    //鼠标中轮滚动</span><br><span class="line">    public void OnScroll(PointerEventData eventData)</span><br><span class="line">    &#123;</span><br><span class="line">        Debug.Log(<span class="string">"OnScroll"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //移动物体</span><br><span class="line">    public void OnMove(AxisEventData eventData)</span><br><span class="line">    &#123;</span><br><span class="line">        Debug.Log(<span class="string">"OnMove"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //提交</span><br><span class="line">    public void OnSubmit(BaseEventData eventData)</span><br><span class="line">    &#123;</span><br><span class="line">        Debug.Log(<span class="string">"OnSubmit"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //取消</span><br><span class="line">    public void OnCancel(BaseEventData eventData)</span><br><span class="line">    &#123;</span><br><span class="line">        Debug.Log(<span class="string">"OnCancel"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">#endregion</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
       
     </div>
 
@@ -463,7 +464,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/unity-shader/" rel="tag"># unity shader</a>
+            <a href="/tags/Ugui/" rel="tag"># Ugui</a>
           
         </div>
       
@@ -476,8 +477,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/06/21/Unity-UGUI-0/" rel="next" title="Unity-UGUI">
-                <i class="fa fa-chevron-left"></i> Unity-UGUI
+              <a href="/2018/03/18/Unity_YH123md/" rel="next" title="Unity性能优化1 2 3">
+                <i class="fa fa-chevron-left"></i> Unity性能优化1 2 3
               </a>
             
           </div>
@@ -486,8 +487,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/06/25/Unity-Shader-边缘色/" rel="prev" title="Unity-Shader-边缘色">
-                Unity-Shader-边缘色 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/06/21/miniMap/" rel="prev" title="吃鸡手游小地图开发">
+                吃鸡手游小地图开发 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
