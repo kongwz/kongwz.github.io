@@ -90,18 +90,18 @@
 
 
 
-<meta name="description" content="###由于刚刚换了公司，所以现在正在接触新框架Entitas和UGUI，因为以前都是在使用NGUI，所以，现在每天感觉都在接触新的东西，可谓是每天都充满了挑战呀，哈哈。 ###今天做一个功能，类似与吃鸡游戏的小地图和大地图，功能大概包括周围人物怪物标识，场景物资标识，玩家和队友再地图上的标点和 自身与标点的划线、缩放、拖拽等 因为设计点击和拖拽，所以需要单独监听这两个事件，但是我发现UGUI 的事">
+<meta name="description" content="由于刚刚换了公司，所以现在正在接触新框架Entitas和UGUI，因为以前都是在使用NGUI，所以，现在每天感觉都在接触新的东西，可谓是每天都充满了挑战呀，哈哈。今天做一个功能，类似与吃鸡游戏的小地图和大地图，功能大概包括周围人物怪物标识，场景物资标识，玩家和队友再地图上的标点和 自身与标点的划线、缩放、拖拽等因为设计点击和拖拽，所以需要单独监听这两个事件，但是我发现UGUI 的事件执行顺序是这样">
 <meta name="keywords" content="Ugui">
 <meta property="og:type" content="article">
 <meta property="og:title" content="UGUI事件顺序">
 <meta property="og:url" content="http://kongwz.cn/2018/06/05/Unity-Ugui/index.html">
 <meta property="og:site_name" content="Kelo&#39;s blog">
-<meta property="og:description" content="###由于刚刚换了公司，所以现在正在接触新框架Entitas和UGUI，因为以前都是在使用NGUI，所以，现在每天感觉都在接触新的东西，可谓是每天都充满了挑战呀，哈哈。 ###今天做一个功能，类似与吃鸡游戏的小地图和大地图，功能大概包括周围人物怪物标识，场景物资标识，玩家和队友再地图上的标点和 自身与标点的划线、缩放、拖拽等 因为设计点击和拖拽，所以需要单独监听这两个事件，但是我发现UGUI 的事">
+<meta property="og:description" content="由于刚刚换了公司，所以现在正在接触新框架Entitas和UGUI，因为以前都是在使用NGUI，所以，现在每天感觉都在接触新的东西，可谓是每天都充满了挑战呀，哈哈。今天做一个功能，类似与吃鸡游戏的小地图和大地图，功能大概包括周围人物怪物标识，场景物资标识，玩家和队友再地图上的标点和 自身与标点的划线、缩放、拖拽等因为设计点击和拖拽，所以需要单独监听这两个事件，但是我发现UGUI 的事件执行顺序是这样">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-07-05T02:38:38.145Z">
+<meta property="og:updated_time" content="2018-08-17T06:59:29.937Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="UGUI事件顺序">
-<meta name="twitter:description" content="###由于刚刚换了公司，所以现在正在接触新框架Entitas和UGUI，因为以前都是在使用NGUI，所以，现在每天感觉都在接触新的东西，可谓是每天都充满了挑战呀，哈哈。 ###今天做一个功能，类似与吃鸡游戏的小地图和大地图，功能大概包括周围人物怪物标识，场景物资标识，玩家和队友再地图上的标点和 自身与标点的划线、缩放、拖拽等 因为设计点击和拖拽，所以需要单独监听这两个事件，但是我发现UGUI 的事">
+<meta name="twitter:description" content="由于刚刚换了公司，所以现在正在接触新框架Entitas和UGUI，因为以前都是在使用NGUI，所以，现在每天感觉都在接触新的东西，可谓是每天都充满了挑战呀，哈哈。今天做一个功能，类似与吃鸡游戏的小地图和大地图，功能大概包括周围人物怪物标识，场景物资标识，玩家和队友再地图上的标点和 自身与标点的划线、缩放、拖拽等因为设计点击和拖拽，所以需要单独监听这两个事件，但是我发现UGUI 的事件执行顺序是这样">
 
 
 
@@ -402,9 +402,7 @@
       
 
       
-        <p>###由于刚刚换了公司，所以现在正在接触新框架Entitas和UGUI，因为以前都是在使用NGUI，所以，现在每天感觉都在接触新的东西，可谓是每天都充满了挑战呀，哈哈。</p>
-<p>###今天做一个功能，类似与吃鸡游戏的小地图和大地图，功能大概包括<em>周围人物怪物标识，场景物资标识，玩家和队友再地图上的标点和 自身与标点的划线、缩放、拖拽等</em></p>
-<p>因为设计点击和拖拽，所以需要单独监听这两个事件，但是我发现UGUI 的事件执行顺序是这样的<br><a id="more"></a><br>点击一下的事件执行顺序<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">OnPointerDown</span><br><span class="line">OnInitializePotentialDrag</span><br><span class="line">OnPointerEnter</span><br><span class="line">OnPointerUp</span><br><span class="line">OnPointerClick</span><br><span class="line">OnPointerExit</span><br></pre></td></tr></table></figure></p>
+        <h3 id="由于刚刚换了公司，所以现在正在接触新框架Entitas和UGUI，因为以前都是在使用NGUI，所以，现在每天感觉都在接触新的东西，可谓是每天都充满了挑战呀，哈哈。"><a href="#由于刚刚换了公司，所以现在正在接触新框架Entitas和UGUI，因为以前都是在使用NGUI，所以，现在每天感觉都在接触新的东西，可谓是每天都充满了挑战呀，哈哈。" class="headerlink" title="由于刚刚换了公司，所以现在正在接触新框架Entitas和UGUI，因为以前都是在使用NGUI，所以，现在每天感觉都在接触新的东西，可谓是每天都充满了挑战呀，哈哈。"></a>由于刚刚换了公司，所以现在正在接触新框架Entitas和UGUI，因为以前都是在使用NGUI，所以，现在每天感觉都在接触新的东西，可谓是每天都充满了挑战呀，哈哈。</h3><h3 id="今天做一个功能，类似与吃鸡游戏的小地图和大地图，功能大概包括周围人物怪物标识，场景物资标识，玩家和队友再地图上的标点和-自身与标点的划线、缩放、拖拽等"><a href="#今天做一个功能，类似与吃鸡游戏的小地图和大地图，功能大概包括周围人物怪物标识，场景物资标识，玩家和队友再地图上的标点和-自身与标点的划线、缩放、拖拽等" class="headerlink" title="今天做一个功能，类似与吃鸡游戏的小地图和大地图，功能大概包括周围人物怪物标识，场景物资标识，玩家和队友再地图上的标点和 自身与标点的划线、缩放、拖拽等"></a>今天做一个功能，类似与吃鸡游戏的小地图和大地图，功能大概包括<em>周围人物怪物标识，场景物资标识，玩家和队友再地图上的标点和 自身与标点的划线、缩放、拖拽等</em></h3><p>因为设计点击和拖拽，所以需要单独监听这两个事件，但是我发现UGUI 的事件执行顺序是这样的<br><a id="more"></a><br>点击一下的事件执行顺序<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">OnPointerDown</span><br><span class="line">OnInitializePotentialDrag</span><br><span class="line">OnPointerEnter</span><br><span class="line">OnPointerUp</span><br><span class="line">OnPointerClick</span><br><span class="line">OnPointerExit</span><br></pre></td></tr></table></figure></p>
 <p>当我按下并拖动的事件执行顺序<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">OnPointerDown</span><br><span class="line">OnInitializePotentialDrag</span><br><span class="line">OnPointerEnter</span><br><span class="line">OnBeginDrag</span><br><span class="line">OnDrag</span><br><span class="line">OnPointerUp</span><br><span class="line">OnPointerClick</span><br><span class="line">OnEndDrag</span><br><span class="line">OnPointerExit</span><br></pre></td></tr></table></figure></p>
 <p>可以看出 当同一个物体我们同时监听它的点击事件和拖动事件的时候，是不能直接通过OnPointerClick或者OnPointerDown来得到的，因为当我们拖动的时候也会执行这两个事件，所以用以下解决方案。</p>
 <ul>
@@ -477,8 +475,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/03/18/Unity_YH123md/" rel="next" title="Unity性能优化1 2 3">
-                <i class="fa fa-chevron-left"></i> Unity性能优化1 2 3
+              <a href="/2018/03/18/unity180318/" rel="next" title="Unity优化123">
+                <i class="fa fa-chevron-left"></i> Unity优化123
               </a>
             
           </div>
@@ -540,8 +538,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/head.png"
@@ -617,6 +624,22 @@
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#由于刚刚换了公司，所以现在正在接触新框架Entitas和UGUI，因为以前都是在使用NGUI，所以，现在每天感觉都在接触新的东西，可谓是每天都充满了挑战呀，哈哈。"><span class="nav-number">1.</span> <span class="nav-text">由于刚刚换了公司，所以现在正在接触新框架Entitas和UGUI，因为以前都是在使用NGUI，所以，现在每天感觉都在接触新的东西，可谓是每天都充满了挑战呀，哈哈。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#今天做一个功能，类似与吃鸡游戏的小地图和大地图，功能大概包括周围人物怪物标识，场景物资标识，玩家和队友再地图上的标点和-自身与标点的划线、缩放、拖拽等"><span class="nav-number">2.</span> <span class="nav-text">今天做一个功能，类似与吃鸡游戏的小地图和大地图，功能大概包括周围人物怪物标识，场景物资标识，玩家和队友再地图上的标点和 自身与标点的划线、缩放、拖拽等</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

@@ -4,6 +4,46 @@
 
     
   <url>
+    <loc>http://kongwz.cn/2018/06/25/Unity-Shader-%E8%BE%B9%E7%BC%98%E8%89%B2/</loc>
+    <lastmod>2018-08-23T06:29:43.428Z</lastmod>
+    <data>
+        <display>
+        <title>Unity-Shader-边缘色</title>
+        <pubTime>2018-06-25T10:04:54.000Z</pubTime>
+        
+        <tag>unity shader</tag>
+         
+         
+           
+             
+              <breadCrumb title="unity shader" url="http://kongwz.cn/categories/unity-shader/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://kongwz.cn/2018/06/05/Unity-Ugui/</loc>
+    <lastmod>2018-08-17T06:59:29.937Z</lastmod>
+    <data>
+        <display>
+        <title>UGUI事件顺序</title>
+        <pubTime>2018-06-05T14:20:52.000Z</pubTime>
+        
+        <tag>Ugui</tag>
+         
+         
+           
+             
+              <breadCrumb title="Unity" url="http://kongwz.cn/categories/Unity/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://kongwz.cn/2018/08/15/Unity-%E5%AF%B9%E8%B1%A1%E6%B1%A0/</loc>
     <lastmod>2018-08-17T03:47:29.126Z</lastmod>
     <data>
@@ -124,26 +164,6 @@
 
     
   <url>
-    <loc>http://kongwz.cn/2018/06/05/Unity-Ugui/</loc>
-    <lastmod>2018-07-05T02:38:38.145Z</lastmod>
-    <data>
-        <display>
-        <title>UGUI事件顺序</title>
-        <pubTime>2018-06-05T14:20:52.000Z</pubTime>
-        
-        <tag>Ugui</tag>
-         
-         
-           
-             
-              <breadCrumb title="Unity" url="http://kongwz.cn/categories/Unity/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://kongwz.cn/2018/06/21/miniMap/</loc>
     <lastmod>2018-06-26T12:24:21.078Z</lastmod>
     <data>
@@ -157,26 +177,6 @@
            
              
               <breadCrumb title="Unity" url="http://kongwz.cn/categories/Unity/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://kongwz.cn/2018/06/25/Unity-Shader-%E8%BE%B9%E7%BC%98%E8%89%B2/</loc>
-    <lastmod>2018-06-26T12:24:19.085Z</lastmod>
-    <data>
-        <display>
-        <title>Unity-Shader-边缘色</title>
-        <pubTime>2018-06-25T10:04:54.000Z</pubTime>
-        
-        <tag>unity shader</tag>
-         
-         
-           
-             
-              <breadCrumb title="unity shader" url="http://kongwz.cn/categories/unity-shader/"/>
           
         </display>
     </data>
