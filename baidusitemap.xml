@@ -4,12 +4,12 @@
 
     
   <url>
-    <loc>http://kongwz.cn/2018/08/24/Unity-Shader-Study-01/</loc>
-    <lastmod>2018-08-24T08:26:44.119Z</lastmod>
+    <loc>http://kongwz.cn/2018/06/25/Unity-Shader-%E8%BE%B9%E7%BC%98%E8%89%B2/</loc>
+    <lastmod>2018-08-24T08:35:38.476Z</lastmod>
     <data>
         <display>
-        <title>Unity-Shader(一)——顶点着色去与片段着色器的通讯</title>
-        <pubTime>2018-08-24T07:27:24.000Z</pubTime>
+        <title>Unity-Shader-边缘色</title>
+        <pubTime>2018-06-25T10:04:54.000Z</pubTime>
         
         <tag>Unity Shader</tag>
          
@@ -24,19 +24,59 @@
 
     
   <url>
-    <loc>http://kongwz.cn/2018/06/25/Unity-Shader-%E8%BE%B9%E7%BC%98%E8%89%B2/</loc>
-    <lastmod>2018-08-23T06:29:43.428Z</lastmod>
+    <loc>http://kongwz.cn/2017/05/17/unity-shader-yufa/</loc>
+    <lastmod>2018-08-24T08:35:19.924Z</lastmod>
     <data>
         <display>
-        <title>Unity-Shader-边缘色</title>
-        <pubTime>2018-06-25T10:04:54.000Z</pubTime>
+        <title>unity shader入门语法</title>
+        <pubTime>2017-05-17T09:14:52.000Z</pubTime>
         
-        <tag>unity shader</tag>
+        <tag>Unity Shader</tag>
          
          
            
              
-              <breadCrumb title="unity shader" url="http://kongwz.cn/categories/unity-shader/"/>
+              <breadCrumb title="Unity" url="http://kongwz.cn/categories/Unity/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://kongwz.cn/2018/06/25/Unity-Shader-%E5%B0%8F%E8%AE%B0/</loc>
+    <lastmod>2018-08-24T08:35:03.973Z</lastmod>
+    <data>
+        <display>
+        <title>Unity-Shader-小记</title>
+        <pubTime>2018-06-25T07:18:33.000Z</pubTime>
+        
+        <tag>Unity Shader</tag>
+         
+         
+           
+             
+              <breadCrumb title="Unity" url="http://kongwz.cn/categories/Unity/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://kongwz.cn/2018/08/24/Unity-Shader-Study-01/</loc>
+    <lastmod>2018-08-24T08:34:25.860Z</lastmod>
+    <data>
+        <display>
+        <title>Unity-Shader(一)——顶点着色去与片段着色器的通讯</title>
+        <pubTime>2018-08-24T07:27:24.000Z</pubTime>
+        
+        <tag>Unity Shader</tag>
+         
+         
+           
+             
+              <breadCrumb title="Unity" url="http://kongwz.cn/categories/Unity/"/>
           
         </display>
     </data>
@@ -204,26 +244,6 @@
 
     
   <url>
-    <loc>http://kongwz.cn/2018/06/25/Unity-Shader-%E5%B0%8F%E8%AE%B0/</loc>
-    <lastmod>2018-06-25T10:34:12.136Z</lastmod>
-    <data>
-        <display>
-        <title>Unity-Shader-小记</title>
-        <pubTime>2018-06-25T07:18:33.000Z</pubTime>
-        
-        <tag>unity shader</tag>
-         
-         
-           
-             
-              <breadCrumb title="unity shader" url="http://kongwz.cn/categories/unity-shader/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://kongwz.cn/2018/06/21/Unity-UGUI-0/</loc>
     <lastmod>2018-06-21T10:20:33.480Z</lastmod>
     <data>
@@ -275,26 +295,6 @@
            
              
               <breadCrumb title="Python" url="http://kongwz.cn/categories/Python/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://kongwz.cn/2017/05/17/unity-shader-yufa/</loc>
-    <lastmod>2018-06-21T09:18:01.660Z</lastmod>
-    <data>
-        <display>
-        <title>unity shader入门语法</title>
-        <pubTime>2017-05-17T09:14:52.000Z</pubTime>
-        
-        <tag>unity shader</tag>
-         
-         
-           
-             
-              <breadCrumb title="unity shader" url="http://kongwz.cn/categories/unity-shader/"/>
           
         </display>
     </data>
