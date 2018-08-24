@@ -93,7 +93,7 @@
 <meta name="description" content="卖码为生，一无所成">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Kelo&#39;s blog">
-<meta property="og:url" content="http://kongwz.cn/tags/unity-shader/index.html">
+<meta property="og:url" content="http://kongwz.cn/tags/Unity-Shader/index.html">
 <meta property="og:site_name" content="Kelo&#39;s blog">
 <meta property="og:description" content="卖码为生，一无所成">
 <meta property="og:locale" content="zh-Hans">
@@ -127,13 +127,13 @@
 
 
 
-  <link rel="canonical" href="http://kongwz.cn/tags/unity-shader/"/>
+  <link rel="canonical" href="http://kongwz.cn/tags/Unity-Shader/"/>
 
 
 
 
 
-  <title>标签: unity shader | Kelo's blog</title>
+  <title>标签: Unity Shader | Kelo's blog</title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -264,7 +264,7 @@
 
   <div id="posts" class="posts-collapse">
     <div class="collection-title">
-      <h2>unity shader<small>标签</small>
+      <h2>Unity Shader<small>标签</small>
       </h2>
     </div>
 
@@ -276,37 +276,9 @@
 
       <h3 class="post-title">
         
-            <a class="post-title-link" href="/2018/06/25/Unity-Shader-边缘色/" itemprop="url">
+            <a class="post-title-link" href="/2018/08/24/Unity-Shader-Study-01/" itemprop="url">
               
-                <span itemprop="name">Unity-Shader-边缘色</span>
-              
-            </a>
-        
-      </h3>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-06-25T18:04:54+08:00"
-              content="2018-06-25" >
-          06-25
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h3 class="post-title">
-        
-            <a class="post-title-link" href="/2018/06/25/Unity-Shader-小记/" itemprop="url">
-              
-                <span itemprop="name">Unity-Shader-小记</span>
+                <span itemprop="name">Unity-Shader(一)——顶点着色去与片段着色器的通讯</span>
               
             </a>
         
@@ -314,37 +286,9 @@
 
       <div class="post-meta">
         <time class="post-time" itemprop="dateCreated"
-              datetime="2018-06-25T15:18:33+08:00"
-              content="2018-06-25" >
-          06-25
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h3 class="post-title">
-        
-            <a class="post-title-link" href="/2017/05/17/unity-shader-yufa/" itemprop="url">
-              
-                <span itemprop="name">unity shader入门语法</span>
-              
-            </a>
-        
-      </h3>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-05-17T17:14:52+08:00"
-              content="2017-05-17" >
-          05-17
+              datetime="2018-08-24T15:27:24+08:00"
+              content="2018-08-24" >
+          08-24
         </time>
       </div>
 
@@ -400,7 +344,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">18</span>
+                <span class="site-state-item-count">19</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -422,7 +366,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-count">8</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -715,6 +659,58 @@
             });
           } else {
             var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+</body>
+</html>
+<!-- 页面点击小红心 --> <script type="text/javascript" src="/js/src/love.js"></script>nter();
             /* Set ACL */
             var acl = new AV.ACL();
             acl.setPublicReadAccess(true);
