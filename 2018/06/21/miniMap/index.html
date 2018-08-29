@@ -1,0 +1,971 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Unity," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="需求：做一个吃鸡游戏的小地图，包含放大缩小，拖动，标记点，自己位置与标记位置连线，显示周围敌人的声音（脚步，开火等）这里包含一个需求，就是再地图放大的时候要以自己人物的位置为基准点，也就是说放大到最后需要吧自己的人物移动到屏幕的中间，当然再缩小，还是按照这个思路来，如果放大后发生拖动，则以拖动后地图显示区域的中心为基准点缩放。有点绕……看一下最终实现效果图。">
+<meta name="keywords" content="Unity">
+<meta property="og:type" content="article">
+<meta property="og:title" content="吃鸡手游小地图开发">
+<meta property="og:url" content="http://kongwz.cn/2018/06/21/miniMap/index.html">
+<meta property="og:site_name" content="Kelo&#39;s blog">
+<meta property="og:description" content="需求：做一个吃鸡游戏的小地图，包含放大缩小，拖动，标记点，自己位置与标记位置连线，显示周围敌人的声音（脚步，开火等）这里包含一个需求，就是再地图放大的时候要以自己人物的位置为基准点，也就是说放大到最后需要吧自己的人物移动到屏幕的中间，当然再缩小，还是按照这个思路来，如果放大后发生拖动，则以拖动后地图显示区域的中心为基准点缩放。有点绕……看一下最终实现效果图。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://ophmqxrq8.bkt.clouddn.com/5.gif">
+<meta property="og:updated_time" content="2018-06-26T12:24:21.078Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="吃鸡手游小地图开发">
+<meta name="twitter:description" content="需求：做一个吃鸡游戏的小地图，包含放大缩小，拖动，标记点，自己位置与标记位置连线，显示周围敌人的声音（脚步，开火等）这里包含一个需求，就是再地图放大的时候要以自己人物的位置为基准点，也就是说放大到最后需要吧自己的人物移动到屏幕的中间，当然再缩小，还是按照这个思路来，如果放大后发生拖动，则以拖动后地图显示区域的中心为基准点缩放。有点绕……看一下最终实现效果图。">
+<meta name="twitter:image" content="http://ophmqxrq8.bkt.clouddn.com/5.gif">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 'undefined',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://kongwz.cn/2018/06/21/miniMap/"/>
+
+
+
+
+
+  <title>吃鸡手游小地图开发 | Kelo's blog</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Kelo's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description"></h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://kongwz.cn/2018/06/21/miniMap/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Kelo">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/head.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Kelo's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">吃鸡手游小地图开发</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-21T17:42:18+08:00">
+                2018-06-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Unity/" itemprop="url" rel="index">
+                    <span itemprop="name">Unity</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/06/21/miniMap/" class="leancloud_visitors" data-flag-title="吃鸡手游小地图开发">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计</span>
+                
+                <span title="字数统计">
+                  
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长</span>
+                
+                <span title="阅读时长">
+                  
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="需求：做一个吃鸡游戏的小地图，包含放大缩小，拖动，标记点，自己位置与标记位置连线，显示周围敌人的声音（脚步，开火等）"><a href="#需求：做一个吃鸡游戏的小地图，包含放大缩小，拖动，标记点，自己位置与标记位置连线，显示周围敌人的声音（脚步，开火等）" class="headerlink" title="需求：做一个吃鸡游戏的小地图，包含放大缩小，拖动，标记点，自己位置与标记位置连线，显示周围敌人的声音（脚步，开火等）"></a>需求：<em>做一个吃鸡游戏的小地图，包含放大缩小，拖动，标记点，自己位置与标记位置连线，显示周围敌人的声音（脚步，开火等）</em></h3><p><strong>这里包含一个需求，就是再地图放大的时候要以自己人物的位置为基准点，也就是说放大到最后需要吧自己的人物移动到屏幕的中间，当然再缩小，还是按照这个思路来，如果放大后发生拖动，则以拖动后地图显示区域的中心为基准点缩放。</strong>有点绕……看一下最终实现效果图。</p>
+<p><img src="http://ophmqxrq8.bkt.clouddn.com/5.gif" alt="最终效果"></p>
+<a id="more"></a>
+<h3 id="下面-是全部的代码，至于其他需求，拖动边缘检测、标记、连线、声音等就不在这里一一细说了。"><a href="#下面-是全部的代码，至于其他需求，拖动边缘检测、标记、连线、声音等就不在这里一一细说了。" class="headerlink" title="下面 是全部的代码，至于其他需求，拖动边缘检测、标记、连线、声音等就不在这里一一细说了。"></a>下面 是全部的代码，至于其他需求，拖动边缘检测、标记、连线、声音等就不在这里一一细说了。</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br></pre></td><td class="code"><pre><span class="line">using System.Collections;</span><br><span class="line">using System.Collections.Generic;</span><br><span class="line">using UnityEngine;</span><br><span class="line">using UnityEngine.UI;</span><br><span class="line">using UnityEngine.EventSystems;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">public class Test003 : MonoBehaviour , IDragHandler, IPointerDownHandler, IPointerUpHandler , IBeginDragHandler , IEndDragHandler</span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    public Slider _slider;</span><br><span class="line">    public Image _spr;</span><br><span class="line">    public GameObject obj;</span><br><span class="line">    private  Vector2 _rolePos = new Vector3(100, 100, 0);</span><br><span class="line">    private Vector2 _CurrSprCenterPos = Vector2.zero;</span><br><span class="line">    Vector2 endSprPos = Vector2.zero;</span><br><span class="line">    // Use this <span class="keyword">for</span> initialization</span><br><span class="line">    void Start()</span><br><span class="line">    &#123;</span><br><span class="line">        _CurrSprCenterPos = _rolePos;</span><br><span class="line">        originalPos = _spr.GetComponent&lt;RectTransform&gt;().anchoredPosition;</span><br><span class="line">        _slider.onValueChanged.AddListener(delegate</span><br><span class="line">        &#123;</span><br><span class="line">            SliderValueChanged();</span><br><span class="line">        &#125;);</span><br><span class="line">        Debug.LogError(_rolePos);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // Update is called once per frame</span><br><span class="line">    void Update()</span><br><span class="line">    &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    Vector2 originalPos = Vector2.zero;</span><br><span class="line">    public void SliderValueChanged()</span><br><span class="line">    &#123;</span><br><span class="line">        _spr.transform.localScale = new Vector3(4 * _slider.value + 1,4* _slider.value + 1, 4* _slider.value + 1);</span><br><span class="line">        SetSprPosition();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void <span class="function"><span class="title">SetSprPosition</span></span>() &#123;</span><br><span class="line">        <span class="built_in">float</span> tmpX = _spr.transform.localScale.x * _spr.GetComponent&lt;RectTransform&gt;().sizeDelta.x / 2 - _spr.GetComponent&lt;RectTransform&gt;().sizeDelta.x / 2;</span><br><span class="line">        <span class="built_in">float</span> tmpY = _spr.transform.localScale.y * _spr.GetComponent&lt;RectTransform&gt;().sizeDelta.y / 2 - _spr.GetComponent&lt;RectTransform&gt;().sizeDelta.y / 2;</span><br><span class="line">        </span><br><span class="line">        <span class="built_in">float</span> tmpx = (originalPos.x - _rolePos.x) * _spr.transform.localScale.x;</span><br><span class="line">        <span class="built_in">float</span> tmpy = (originalPos.y - _rolePos.y) * _spr.transform.localScale.x;</span><br><span class="line">        <span class="keyword">if</span> (tmpX &lt; Mathf.Abs(tmpx) &amp;&amp; tmpY &lt; Mathf.Abs(tmpy))</span><br><span class="line">        &#123;</span><br><span class="line">            tmpX = originalPos.x &gt;= _rolePos.x ? tmpX : tmpX * -1;</span><br><span class="line">            tmpY = originalPos.y &gt;= _rolePos.y ? tmpY : tmpY * -1;</span><br><span class="line">            _spr.GetComponent&lt;RectTransform&gt;().anchoredPosition = originalPos + new Vector2(tmpX, tmpY);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (tmpY &lt; Mathf.Abs(tmpy) &amp;&amp; tmpX &gt;= Mathf.Abs(tmpx))</span><br><span class="line">        &#123;</span><br><span class="line">           </span><br><span class="line">            tmpY = originalPos.y &gt;= _rolePos.y ? tmpY : tmpY * -1;</span><br><span class="line">            _spr.GetComponent&lt;RectTransform&gt;().anchoredPosition = new Vector2(((originalPos.x - _rolePos.x) * _spr.transform.localScale.x + originalPos.x), originalPos.y + tmpY);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (tmpY &gt;= Mathf.Abs(tmpy) &amp;&amp; tmpX &lt; Mathf.Abs(tmpx))</span><br><span class="line">        &#123;</span><br><span class="line">            tmpX = originalPos.x &gt;= _rolePos.x ? tmpX : tmpX * -1;</span><br><span class="line">            _spr.GetComponent&lt;RectTransform&gt;().anchoredPosition = new Vector2(originalPos.x + tmpX , ((originalPos.y - _rolePos.y) * _spr.transform.localScale.y + originalPos.y));</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            _spr.GetComponent&lt;RectTransform&gt;().anchoredPosition = new Vector2(((originalPos.x - _rolePos.x) * _spr.transform.localScale.x + originalPos.x), ((originalPos.y - _rolePos.y) * _spr.transform.localScale.y + originalPos.y));</span><br><span class="line">        &#125;</span><br><span class="line">        _CurrSprCenterPos = new Vector2(originalPos.x - (_spr.GetComponent&lt;RectTransform&gt;().anchoredPosition.x - originalPos.x) / _spr.transform.localScale.x, originalPos.y - (_spr.GetComponent&lt;RectTransform&gt;().anchoredPosition.y - originalPos.y) / _spr.transform.localScale.y);</span><br><span class="line">        endSprPos = _spr.GetComponent&lt;RectTransform&gt;().anchoredPosition;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">#region 拖拽</span></span><br><span class="line">    Vector2 offset = Vector2.zero;</span><br><span class="line"></span><br><span class="line">    public void OnDrag(PointerEventData eventData)</span><br><span class="line">    &#123;</span><br><span class="line">        Vector2 tmpPos = Vector2.zero;</span><br><span class="line">        <span class="keyword">if</span> (RectTransformUtility.ScreenPointToLocalPointInRectangle(this.transform.parent.GetComponent&lt;RectTransform&gt;(), eventData.position, eventData.enterEventCamera, out tmpPos))</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span> (_slider.value &gt; 0)</span><br><span class="line">            &#123;</span><br><span class="line">                _spr.GetComponent&lt;RectTransform&gt;().anchoredPosition = offset + tmpPos;</span><br><span class="line">                _CurrSprCenterPos = new Vector2(originalPos.x - (_spr.GetComponent&lt;RectTransform&gt;().anchoredPosition.x - originalPos.x) / _spr.transform.localScale.x, originalPos.y - (_spr.GetComponent&lt;RectTransform&gt;().anchoredPosition.y - originalPos.y) / _spr.transform.localScale.y);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void OnPointerDown(PointerEventData eventData)</span><br><span class="line">    &#123;</span><br><span class="line">        Vector2 tmpPos = Vector2.zero;</span><br><span class="line">        <span class="keyword">if</span> (RectTransformUtility.ScreenPointToLocalPointInRectangle(this.transform.parent.GetComponent&lt;RectTransform&gt;(), eventData.position, eventData.enterEventCamera, out tmpPos))</span><br><span class="line">        &#123;</span><br><span class="line">            offset = tmpPos;</span><br><span class="line">            Debug.LogError(<span class="string">"点击 位置    "</span> + tmpPos);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void OnPointerUp(PointerEventData eventData)</span><br><span class="line">    &#123;</span><br><span class="line">        offset = Vector2.zero;</span><br><span class="line">    &#125;</span><br><span class="line">    Vector2 beginDragPos = Vector2.zero;</span><br><span class="line">    public void OnEndDrag(PointerEventData eventData)</span><br><span class="line">    &#123;</span><br><span class="line">        Debug.LogError(<span class="string">"************END*************"</span>);</span><br><span class="line">        beginDragPos = _spr.GetComponent&lt;RectTransform&gt;().anchoredPosition;</span><br><span class="line">        _rolePos = _CurrSprCenterPos;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void OnBeginDrag(PointerEventData eventData)</span><br><span class="line">    &#123;</span><br><span class="line">        Debug.LogError(<span class="string">"************START*************"</span>);</span><br><span class="line">        beginDragPos = _spr.GetComponent&lt;RectTransform&gt;().anchoredPosition;</span><br><span class="line">        offset = beginDragPos - offset;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">#endregion</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h3 id="2-小地图人物移动，对应地图图片发生位移主要代码"><a href="#2-小地图人物移动，对应地图图片发生位移主要代码" class="headerlink" title="2.小地图人物移动，对应地图图片发生位移主要代码"></a>2.小地图人物移动，对应地图图片发生位移主要代码</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">int _sceneWidth = 1500;</span><br><span class="line">    int _sceneHigth = 1500;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">float</span> widthrate = _mapImage.rectTransform.sizeDelta.x / _sceneWidth</span><br><span class="line"></span><br><span class="line">    <span class="built_in">float</span> hightrate = _mapImage.rectTransform.sizeDelta.y / _sceneHigth</span><br><span class="line"></span><br><span class="line">    <span class="built_in">float</span> RadarMapX = gloable.role.position.x * widthrate * -1;</span><br><span class="line">    <span class="built_in">float</span> RadarMapY = gloable.role.position.y * hightrate * -1;</span><br><span class="line"></span><br><span class="line">    _mapImage.rectTransform.anchoredPosition = Vector2.New(RadarMapX + _mapImage.rectTransform.sizeDelta.x / 2 ,RadarMapY + _mapImage.rectTransform.sizeDelta.y / 2)</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/images/weixin.png" alt="Kelo WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/images/zhifubao.png" alt="Kelo Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Unity/" rel="tag"># Unity</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/06/05/Unity-Ugui/" rel="next" title="UGUI事件顺序">
+                <i class="fa fa-chevron-left"></i> UGUI事件顺序
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/06/21/Unity-UGUI-0/" rel="prev" title="Unity-UGUI">
+                Unity-UGUI <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zNzk4NC8xNDUxNA"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/head.png"
+               alt="Kelo" />
+          <p class="site-author-name" itemprop="name">Kelo</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+           
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">19</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/kongwz" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-block">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              友链
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://no-nothing.github.io/" title="no-nothing" target="_blank">no-nothing</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#需求：做一个吃鸡游戏的小地图，包含放大缩小，拖动，标记点，自己位置与标记位置连线，显示周围敌人的声音（脚步，开火等）"><span class="nav-number">1.</span> <span class="nav-text">需求：做一个吃鸡游戏的小地图，包含放大缩小，拖动，标记点，自己位置与标记位置连线，显示周围敌人的声音（脚步，开火等）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#下面-是全部的代码，至于其他需求，拖动边缘检测、标记、连线、声音等就不在这里一一细说了。"><span class="nav-number">2.</span> <span class="nav-text">下面 是全部的代码，至于其他需求，拖动边缘检测、标记、连线、声音等就不在这里一一细说了。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-小地图人物移动，对应地图图片发生位移主要代码"><span class="nav-number">3.</span> <span class="nav-text">2.小地图人物移动，对应地图图片发生位移主要代码</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+
+    
+
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Kelo</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user">本站访客数</i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人次
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye">本站总访问量</i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("WfsTKkATCOFW291wPQOIeQHS-gzGzoHsz", "mn2y41AjTzIoIyTOx5p6bFt3");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+</body>
+</html>
+<!-- 页面点击小红心 --> <script type="text/javascript" src="/js/src/love.js"></script>

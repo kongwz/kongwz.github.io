@@ -1,0 +1,1019 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Unity-优化," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="游戏开发，实现功能是基础，性能优化才是重点。 实际开发中会遇到很多类似的情况，同一个物体要创建很多个，比如背包中的Item、伤害飘字、子弹、怪物等。像这种情况，如果初始化的时候一次性全部创建出来，难免会发生卡顿的情况，常见的是背包打开界面的时候发生卡顿。 通常这种情况，大家都会想到，在进游戏的时候预先加载出来一部分Item，只是隐藏掉（或者移动它的位置），在使用的时候再拿出来，这样避免了一次性创建">
+<meta name="keywords" content="Unity-优化">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Unity-对象池">
+<meta property="og:url" content="http://kongwz.cn/2018/08/15/Unity-对象池/index.html">
+<meta property="og:site_name" content="Kelo&#39;s blog">
+<meta property="og:description" content="游戏开发，实现功能是基础，性能优化才是重点。 实际开发中会遇到很多类似的情况，同一个物体要创建很多个，比如背包中的Item、伤害飘字、子弹、怪物等。像这种情况，如果初始化的时候一次性全部创建出来，难免会发生卡顿的情况，常见的是背包打开界面的时候发生卡顿。 通常这种情况，大家都会想到，在进游戏的时候预先加载出来一部分Item，只是隐藏掉（或者移动它的位置），在使用的时候再拿出来，这样避免了一次性创建">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://kongwz.cn/images/ObjPool.gif">
+<meta property="og:image" content="http://ophmqxrq8.bkt.clouddn.com/DSCF1843.png">
+<meta property="og:updated_time" content="2018-08-17T03:47:29.126Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Unity-对象池">
+<meta name="twitter:description" content="游戏开发，实现功能是基础，性能优化才是重点。 实际开发中会遇到很多类似的情况，同一个物体要创建很多个，比如背包中的Item、伤害飘字、子弹、怪物等。像这种情况，如果初始化的时候一次性全部创建出来，难免会发生卡顿的情况，常见的是背包打开界面的时候发生卡顿。 通常这种情况，大家都会想到，在进游戏的时候预先加载出来一部分Item，只是隐藏掉（或者移动它的位置），在使用的时候再拿出来，这样避免了一次性创建">
+<meta name="twitter:image" content="http://kongwz.cn/images/ObjPool.gif">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 'undefined',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://kongwz.cn/2018/08/15/Unity-对象池/"/>
+
+
+
+
+
+  <title>Unity-对象池 | Kelo's blog</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Kelo's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description"></h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://kongwz.cn/2018/08/15/Unity-对象池/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Kelo">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/head.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Kelo's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">Unity-对象池</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-15T17:02:08+08:00">
+                2018-08-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Unity/" itemprop="url" rel="index">
+                    <span itemprop="name">Unity</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/08/15/Unity-对象池/" class="leancloud_visitors" data-flag-title="Unity-对象池">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计</span>
+                
+                <span title="字数统计">
+                  
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长</span>
+                
+                <span title="阅读时长">
+                  
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>游戏开发，实现功能是基础，性能优化才是重点。</p>
+<p>实际开发中会遇到很多类似的情况，同一个物体要创建很多个，比如背包中的Item、伤害飘字、子弹、怪物等。像这种情况，如果初始化的时候一次性全部创建出来，难免会发生卡顿的情况，常见的是背包打开界面的时候发生卡顿。</p>
+<p>通常这种情况，大家都会想到，在进游戏的时候预先加载出来一部分Item，只是隐藏掉（或者移动它的位置），在使用的时候再拿出来，这样避免了一次性创建很多造成的卡顿。</p>
+<p>还有一种情况是，频繁的创建销毁物体，导致性能消耗很大，这个时候我们的思路是，第一次使用的时候创建，不用的时候缓存下来，而不是直接销毁（可以隐藏），这样再次使用就可以直接去拿了。</p>
+<h2 id=""><a href="#" class="headerlink" title=""></a><a id="more"></a></h2><h2 id="对象池（零）"><a href="#对象池（零）" class="headerlink" title="对象池（零）"></a>对象池（零）</h2><blockquote>
+<p>简单的对象池</p>
+</blockquote>
+<p>这个在UI 模块中我经常使用，用于同一个物体多次创建销毁的情况，避免刷新数据的时候频繁创建，看一下代码吧</p>
+<h4 id="单一对象池的构建"><a href="#单一对象池的构建" class="headerlink" title="单一对象池的构建"></a>单一对象池的构建</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">List&lt;GameObject&gt; _objList = new List&lt;GameObject&gt;();</span><br><span class="line">    GameObject ObjPool()</span><br><span class="line">    &#123;</span><br><span class="line">        GameObject obj = null;</span><br><span class="line">        <span class="keyword">for</span> (int i = 0; i &lt; _objList.Count; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span> (!_objList[i].activeSelf)</span><br><span class="line">            &#123;</span><br><span class="line">                _objList[i].SetActive(<span class="literal">true</span>);</span><br><span class="line">                <span class="built_in">return</span> _objList[i];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        obj = Instantiate(item) as GameObject;</span><br><span class="line">        obj.transform.localPosition = Vector3.zero;</span><br><span class="line">        obj.transform.SetParent(transform);</span><br><span class="line">        obj.SetActive(<span class="literal">true</span>);</span><br><span class="line">        _objList.Add(obj);</span><br><span class="line">        <span class="built_in">return</span> obj;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>代码很简单，就是遍历列表，有隐藏的对象就拿出来使用，没有隐藏的（对象池内都是活跃状态）就再创建，这种情况在刷新界面数据的时候避免全部销毁，再创建的消耗。</p>
+<h4 id="使用对象池"><a href="#使用对象池" class="headerlink" title="使用对象池"></a>使用对象池</h4><p>在使用之前需要先将列表中的对象全部隐藏，然后再去获取</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">_objList.ForEach((item)=&gt;&#123;item.SetActive(<span class="literal">false</span>);&#125;);</span><br></pre></td></tr></table></figure>
+<p>这是简单的对象池，但是有很大的缺点，就是不能缓存多个物体，如果想缓存多类对象的话就得多写几个这种方法，很费劲，还有就是 不方便预缓存对象，那么接下来，今天的重头戏来了</p>
+<h2 id="对象池（一）"><a href="#对象池（一）" class="headerlink" title="对象池（一）"></a>对象池（一）</h2><p>前几天的时候在网上找到了一个封装好的对象池，这里拿来和大家分享</p>
+<p>先放出地址<a href="https://github.com/prime31/RecyclerKit" target="_blank" rel="noopener">RecyclerKit</a></p>
+<p>简单说一下这个工具，代码很简单也很少，除去它自带的Demo只有三个脚本，其中还有一个是Editor，也就不到一千行代码，但是功能还算是很强大了</p>
+<blockquote>
+<p>优点</p>
+</blockquote>
+<ul>
+<li>预加载缓存</li>
+<li>定期销毁缓存对象</li>
+<li>运行时预加载（已加载对象数量不够的时候一次加载多个）</li>
+<li>支持多类对象的缓存</li>
+<li>使用方便，代码简短，方便封装</li>
+</ul>
+<blockquote>
+<p>使用</p>
+</blockquote>
+<p>它的入口是TrashMan这个类，这个类里会缓存多个TrashManRecycleBin</p>
+<p>而TrashManRecycleBin里会有很多个对象，这里是指的同一个TrashManRecycleBin里存的是同一种对象，然后根据对象预设的InstanceID来存储</p>
+<p>TrashMan 可以根据预设的对象来获取对象池的item，也可以根据预设的名字获取，方法是：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">	/// &lt;summary&gt;</span><br><span class="line">	/// pulls an object out of the recycle bin using the bin<span class="string">'s name</span></span><br><span class="line"><span class="string">	/// &lt;/summary&gt;</span></span><br><span class="line"><span class="string">	public static GameObject spawn( string gameObjectName, Vector3 position = default( Vector3 ), Quaternion rotation = default( Quaternion ) )</span></span><br><span class="line"><span class="string">	&#123;</span></span><br><span class="line"><span class="string">		int instanceId = -1;</span></span><br><span class="line"><span class="string">		if( instance._poolNameToInstanceId.TryGetValue( gameObjectName, out instanceId ) )</span></span><br><span class="line"><span class="string">		&#123;</span></span><br><span class="line"><span class="string">			return spawn( instanceId, position, rotation );</span></span><br><span class="line"><span class="string">		&#125;</span></span><br><span class="line"><span class="string">		else</span></span><br><span class="line"><span class="string">		&#123;</span></span><br><span class="line"><span class="string">			Debug.LogError( "attempted to spawn a GameObject from recycle bin (" + gameObjectName + ") but there is no recycle bin setup for it" );</span></span><br><span class="line"><span class="string">			return null;</span></span><br><span class="line"><span class="string">		&#125;</span></span><br><span class="line"><span class="string">	&#125;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">/// &lt;summary&gt;</span></span><br><span class="line"><span class="string">	/// internal method that actually does the work of grabbing the item from the bin and returning it</span></span><br><span class="line"><span class="string">	/// &lt;/summary&gt;</span></span><br><span class="line"><span class="string">	/// &lt;param name="gameObjectInstanceId"&gt;Game object instance identifier.&lt;/param&gt;</span></span><br><span class="line"><span class="string">	static GameObject spawn( int gameObjectInstanceId, Vector3 position, Quaternion rotation )</span></span><br><span class="line"><span class="string">	&#123;</span></span><br><span class="line"><span class="string">		if( instance._instanceIdToRecycleBin.ContainsKey( gameObjectInstanceId ) )</span></span><br><span class="line"><span class="string">		&#123;</span></span><br><span class="line"><span class="string">			var newGo = instance._instanceIdToRecycleBin[gameObjectInstanceId].spawn();</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">			if( newGo != null )</span></span><br><span class="line"><span class="string">			&#123;</span></span><br><span class="line"><span class="string">				var newTransform = newGo.transform;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">                if( newTransform as RectTransform )</span></span><br><span class="line"><span class="string">                    newTransform.SetParent( null, false );</span></span><br><span class="line"><span class="string">                else</span></span><br><span class="line"><span class="string">				    newTransform.parent = null;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">				newTransform.position = position;</span></span><br><span class="line"><span class="string">				newTransform.rotation = rotation;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">				newGo.SetActive( true );</span></span><br><span class="line"><span class="string">			&#125;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">			return newGo;</span></span><br><span class="line"><span class="string">		&#125;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">		return null;</span></span><br><span class="line"><span class="string">	&#125;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">/// &lt;summary&gt;</span></span><br><span class="line"><span class="string">	/// pulls an object out of the recycle bin</span></span><br><span class="line"><span class="string">	/// &lt;/summary&gt;</span></span><br><span class="line"><span class="string">	/// &lt;param name="go"&gt;Go.&lt;/param&gt;</span></span><br><span class="line"><span class="string">	public static GameObject spawn( GameObject go, Vector3 position = default( Vector3 ), Quaternion rotation = default( Quaternion ) )</span></span><br><span class="line"><span class="string">	&#123;</span></span><br><span class="line"><span class="string">		if( instance._instanceIdToRecycleBin.ContainsKey( go.GetInstanceID() ) )</span></span><br><span class="line"><span class="string">		&#123;</span></span><br><span class="line"><span class="string">			return spawn( go.GetInstanceID(), position, rotation );</span></span><br><span class="line"><span class="string">		&#125;</span></span><br><span class="line"><span class="string">		else</span></span><br><span class="line"><span class="string">		&#123;</span></span><br><span class="line"><span class="string">            if (go == null) &#123;</span></span><br><span class="line"><span class="string">                Debug.LogError("Spawn go is null");</span></span><br><span class="line"><span class="string">                return null;</span></span><br><span class="line"><span class="string">            &#125;</span></span><br><span class="line"><span class="string">            //这里是我改的 处理直接去获取一个没有缓存的对象的时候，先加进缓存池中</span></span><br><span class="line"><span class="string">            var recycleBin = new TrashManRecycleBin();</span></span><br><span class="line"><span class="string">            recycleBin.prefab = go;</span></span><br><span class="line"><span class="string">            recycleBin.instancesToPreallocate = 1;</span></span><br><span class="line"><span class="string">            recycleBin.cullInterval = 0;</span></span><br><span class="line"><span class="string">            recycleBin.persistBetweenScenes = false;</span></span><br><span class="line"><span class="string">            manageRecycleBin(recycleBin);</span></span><br><span class="line"><span class="string">            return spawn(go.GetInstanceID(), position, rotation);</span></span><br><span class="line"><span class="string">            //---------------------</span></span><br><span class="line"><span class="string">            //  以下是原来的代码</span></span><br><span class="line"><span class="string">            //Debug.LogWarning( "attempted to spawn go (" + go.name + ") but there is no recycle bin setup for it. Falling back to Instantiate" );</span></span><br><span class="line"><span class="string">            //var newGo = GameObject.Instantiate( go, position, rotation ) as GameObject;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">            //         if( newGo.transform as RectTransform != null )</span></span><br><span class="line"><span class="string">            //             newGo.transform.SetParent( null, false );</span></span><br><span class="line"><span class="string">            //         else</span></span><br><span class="line"><span class="string">            //    newGo.transform.parent = null;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">            //return newGo;</span></span><br><span class="line"><span class="string">		&#125;</span></span><br><span class="line"><span class="string">	&#125;</span></span><br></pre></td></tr></table></figure>
+<p>这个三个方法都可以 ，看那个方便就使用哪个。</p>
+<p>这里我封装了一个 PoolUtil类，包括 预缓存，和获取、销毁，代码直接贴出来</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line">using System.Collections;</span><br><span class="line">using System.Collections.Generic;</span><br><span class="line">using UnityEngine;</span><br><span class="line">using UnityEngine.Assertions;</span><br><span class="line"></span><br><span class="line">public class PoolUtil  &#123;</span><br><span class="line"></span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 初始化 对象池 预缓存 数据对象</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    /// &lt;param name=<span class="string">"obj"</span>&gt;&lt;/param&gt;</span><br><span class="line">    /// &lt;param name=<span class="string">"instancesToPreallocate"</span>&gt;&lt;/param&gt;</span><br><span class="line">    /// &lt;param name=<span class="string">"intancesToMaintainInPool"</span>&gt;&lt;/param&gt;</span><br><span class="line">    /// &lt;param name=<span class="string">"instancesToAllocateIfEmpty"</span>&gt;  &lt;/param&gt;</span><br><span class="line">    /// &lt;param name=<span class="string">"hardLimit"</span>&gt;&lt;/param&gt;</span><br><span class="line">    /// &lt;param name=<span class="string">"cullInterval"</span>&gt; &lt;/param&gt;</span><br><span class="line">    public static void PreloadRecycleBin(GameObject obj, int instancesToPreallocate, int instancesToMaintainInPool = 10, int instancesToAllocateIfEmpty = 4,int hardLimit = 30 , int cullInterval = 6) &#123;</span><br><span class="line">        Assert.IsFalse(CheckHasSpawnerGameObject(obj.name));</span><br><span class="line">        Assert.IsTrue(instancesToMaintainInPool &gt; instancesToPreallocate);</span><br><span class="line">        Debug.LogError(<span class="string">"@@@@@@@@@@@@@@@"</span>);</span><br><span class="line">        var recycleBin = new TrashManRecycleBin();</span><br><span class="line">        recycleBin.prefab = obj;</span><br><span class="line">        recycleBin.instancesToPreallocate = instancesToPreallocate;</span><br><span class="line">        recycleBin.instancesToMaintainInPool = instancesToMaintainInPool;</span><br><span class="line">        recycleBin.instancesToAllocateIfEmpty = instancesToAllocateIfEmpty;</span><br><span class="line">        recycleBin.cullExcessPrefabs = <span class="literal">true</span>;</span><br><span class="line">        recycleBin.cullInterval = cullInterval;</span><br><span class="line">        recycleBin.hardLimit = hardLimit;</span><br><span class="line">        recycleBin.persistBetweenScenes = <span class="literal">false</span>;</span><br><span class="line">        TrashMan.manageRecycleBin(recycleBin);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static bool CheckHasSpawnerGameObject(string objName) &#123;</span><br><span class="line">        <span class="built_in">return</span> TrashMan.recycleBinForGameObjectName(objName) != null;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// </span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    /// &lt;param name=<span class="string">"objName"</span>&gt;&lt;/param&gt;</span><br><span class="line">    /// &lt;returns&gt;&lt;/returns&gt;</span><br><span class="line">    public static GameObject SpawnerGameObject(string objName) &#123;</span><br><span class="line">        <span class="built_in">return</span> TrashMan.spawn(objName);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static GameObject SpawnerGameObject(GameObject obj) &#123;</span><br><span class="line">        <span class="built_in">return</span> TrashMan.spawn(obj);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static GameObject SpawnerGameObject(GameObject obj, Vector3 pos, Quaternion rotation, Transform tf) &#123;</span><br><span class="line">        GameObject go = TrashMan.spawn(obj, pos, rotation);</span><br><span class="line">        go.transform.SetParent(tf);</span><br><span class="line">        <span class="built_in">return</span> go;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void Despawner(GameObject obj) &#123;</span><br><span class="line">        TrashMan.despawn(obj);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>小测试</p>
+</blockquote>
+<p>我使用这个写了一个小测试，代码很简单就不贴出来了，就是随机时间生成Item，每个Item往上移动超出一定范围回收，直接看一下效果吧</p>
+<p><img src="/images/ObjPool.gif" alt="效果"></p>
+<blockquote>
+<p>总结</p>
+</blockquote>
+<p>简洁、强大、易封装，使用起来也挺方便的。</p>
+<h2 id="对象池（二）"><a href="#对象池（二）" class="headerlink" title="对象池（二）"></a>对象池（二）</h2><p>下面这个应该很多人都很熟悉了，PoolManager5 往上有很多对它的研究文章，我就不多说了，这个在Unity 商店是收费的，不过拿来测试 可以在往上找到破解版的，如果真正使用的话 还是建议支持正版</p>
+<p><a href="https://pan.baidu.com/s/1dNvfzAXIIZdyYv2Wx12J3w" target="_blank" rel="noopener">破解版地址</a>  密码: a5ig</p>
+<p>雨松MOMO也有对这个工具的研究文章 ，这里也贴出来 </p>
+<p><a href="https://www.xuanyusong.com/archives/2974" target="_blank" rel="noopener">Unity3D研究院之初探PoolManager插件（七十四）</a></p>
+<p>好东西就是应该拿出来分享的，哈哈，PoolManager5的文章往上一搜一大堆，有兴趣的自己找找吧。</p>
+<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>好久没发自己拍的照片了，哈哈前段时间去 浙江西塘 拍了一些照片，暂且发一张，毕竟这个一篇技术文章（脸皮厚）</p>
+<p><img src="http://ophmqxrq8.bkt.clouddn.com/DSCF1843.png" alt="西塘"></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/images/weixin.png" alt="Kelo WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/images/zhifubao.png" alt="Kelo Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Unity-优化/" rel="tag"># Unity-优化</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/08/10/Unity插件之-更新SVN/" rel="next" title="Unity插件之-更新SVN">
+                <i class="fa fa-chevron-left"></i> Unity插件之-更新SVN
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/08/24/Unity-Shader-Study-01/" rel="prev" title="Unity-Shader(一)顶点着色去与片段着色器的通讯&语义">
+                Unity-Shader(一)顶点着色去与片段着色器的通讯&语义 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zNzk4NC8xNDUxNA"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/head.png"
+               alt="Kelo" />
+          <p class="site-author-name" itemprop="name">Kelo</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+           
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">19</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/kongwz" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-block">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              友链
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://no-nothing.github.io/" title="no-nothing" target="_blank">no-nothing</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#"><span class="nav-number">1.</span> <span class="nav-text"></span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#对象池（零）"><span class="nav-number">2.</span> <span class="nav-text">对象池（零）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#单一对象池的构建"><span class="nav-number">2.0.1.</span> <span class="nav-text">单一对象池的构建</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用对象池"><span class="nav-number">2.0.2.</span> <span class="nav-text">使用对象池</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#对象池（一）"><span class="nav-number">3.</span> <span class="nav-text">对象池（一）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#对象池（二）"><span class="nav-number">4.</span> <span class="nav-text">对象池（二）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#最后"><span class="nav-number">5.</span> <span class="nav-text">最后</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+
+    
+
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Kelo</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user">本站访客数</i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人次
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye">本站总访问量</i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("WfsTKkATCOFW291wPQOIeQHS-gzGzoHsz", "mn2y41AjTzIoIyTOx5p6bFt3");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+</body>
+</html>
+<!-- 页面点击小红心 --> <script type="text/javascript" src="/js/src/love.js"></script>
