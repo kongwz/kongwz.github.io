@@ -103,7 +103,7 @@
 <meta property="og:image" content="http://ophmqxrq8.bkt.clouddn.com/diffuse2.png">
 <meta property="og:image" content="http://ophmqxrq8.bkt.clouddn.com/diffuse4.png">
 <meta property="og:image" content="http://ophmqxrq8.bkt.clouddn.com/diffuse3.png">
-<meta property="og:updated_time" content="2018-08-31T07:24:23.049Z">
+<meta property="og:updated_time" content="2018-09-03T07:13:27.777Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Unity-Shader(二)漫反射光照模型">
 <meta name="twitter:description" content="先来看一下基本光照模型中的漫反射部分的计算公式。 逐顶点光照实现在Pass 中指明 光照模式 1Tags&amp;#123;&amp;quot;LightMode&amp;quot; = &amp;quot;ForwardBase&amp;quot;&amp;#125;">
@@ -493,7 +493,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">float4 frag(v2f i): SV_Target&#123;</span><br><span class="line">	fixed3 ambient = UNITY_LIGHTMODEL_AMBIENT.xyz;</span><br><span class="line">	fixed3 worldNormal = normalize(i.worldNormal);</span><br><span class="line">	fixed3 worldLightDir = normalize(_WorldSpaceLightPos0.xyz);</span><br><span class="line">	fixed halfLambert = dot(worldNormal , worldLightDir) * 0.5 + 0.5;</span><br><span class="line">	fixed3 diffuse = _LightColor0.rgb * _Diffuse.rgb * halfLambert;</span><br><span class="line">	fixed3 color = ambient + diffuse;</span><br><span class="line">	return fixed4(color , 1.0);</span><br><span class="line">	//fixed3 diffuse = _LightColor0.rgb * _Diffuse.rgb * saturate(dot(worldNormal , worldLightDir));</span><br><span class="line">	//fixed3 color = ambient + diffuse;</span><br><span class="line">	//return fixed4(color,1.0);			</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>对比一下效果图，左一是逐顶点漫反射光照，中间是逐像素漫反射光照，最右边是半兰伯特光照模型</p>
 <p><img src="http://ophmqxrq8.bkt.clouddn.com/diffuse3.png" alt=""></p>
-<p>本文缩写内容参考《UnityShader 入门精要》。</p>
+<p><em>本文所写内容参考《UnityShader 入门精要》。</em></p>
 
       
     </div>
@@ -566,6 +566,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/09/03/Unity-Shader-Specular/" rel="prev" title="Unity-Shader(三)高光反射&Blinn-Phong光照模型">
+                Unity-Shader(三)高光反射&Blinn-Phong光照模型 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -641,7 +645,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">20</span>
+                <span class="site-state-item-count">21</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
