@@ -74,7 +74,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Unity Shader," />
+  <meta name="keywords" content="Unity," />
 
 
 
@@ -90,18 +90,22 @@
 
 
 
-<meta name="description" content="初学Shader记录一下 float4 tex2D(sampler2D samp, float2 s)  2D纹理采样，CG内置函数。内部实现分为以下几步：   用图片的宽高度乘以uv数值，得到像素坐标。widthPixel=samp.xs.x;heightPixel=samp.ys.y;  因为取到的数值基本上都是带有小数点的，也就是说不是一个整数，这个时候，需要看图片的过滤设置了。也就是Un">
-<meta name="keywords" content="Unity Shader">
+<meta name="description" content="今天遇到一个问题，记录一下，顺便吧Monobehaviour生命周期 重新看了一遍。  Q:当在monobehaciour中调用了StartCoroutine后（此时yield return new WaitForSeconds(5f)）monobehaciour脚本的enable置程false，那么协程后面的代码还会执行吗？  其实我的第一反应是不执行了，但是经过测试发现，我是错的。 先看一下正">
+<meta name="keywords" content="Unity">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Unity-Shader-小记">
-<meta property="og:url" content="http://kongwz.cn/2018/06/25/Unity-Shader-小记/index.html">
+<meta property="og:title" content="Unity--Monobehaviour生命周期 &amp; 协程Coroutine">
+<meta property="og:url" content="http://kongwz.cn/2018/09/03/Unity-Monobehaviour-Coroutine/index.html">
 <meta property="og:site_name" content="Kelo&#39;s blog">
-<meta property="og:description" content="初学Shader记录一下 float4 tex2D(sampler2D samp, float2 s)  2D纹理采样，CG内置函数。内部实现分为以下几步：   用图片的宽高度乘以uv数值，得到像素坐标。widthPixel=samp.xs.x;heightPixel=samp.ys.y;  因为取到的数值基本上都是带有小数点的，也就是说不是一个整数，这个时候，需要看图片的过滤设置了。也就是Un">
+<meta property="og:description" content="今天遇到一个问题，记录一下，顺便吧Monobehaviour生命周期 重新看了一遍。  Q:当在monobehaciour中调用了StartCoroutine后（此时yield return new WaitForSeconds(5f)）monobehaciour脚本的enable置程false，那么协程后面的代码还会执行吗？  其实我的第一反应是不执行了，但是经过测试发现，我是错的。 先看一下正">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-08-24T08:35:03.973Z">
+<meta property="og:image" content="http://ophmqxrq8.bkt.clouddn.com/201809031759.png">
+<meta property="og:image" content="http://ophmqxrq8.bkt.clouddn.com/201809031803.png">
+<meta property="og:image" content="http://ophmqxrq8.bkt.clouddn.com/o_exeOrder.png">
+<meta property="og:updated_time" content="2018-09-03T10:11:37.835Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Unity-Shader-小记">
-<meta name="twitter:description" content="初学Shader记录一下 float4 tex2D(sampler2D samp, float2 s)  2D纹理采样，CG内置函数。内部实现分为以下几步：   用图片的宽高度乘以uv数值，得到像素坐标。widthPixel=samp.xs.x;heightPixel=samp.ys.y;  因为取到的数值基本上都是带有小数点的，也就是说不是一个整数，这个时候，需要看图片的过滤设置了。也就是Un">
+<meta name="twitter:title" content="Unity--Monobehaviour生命周期 &amp; 协程Coroutine">
+<meta name="twitter:description" content="今天遇到一个问题，记录一下，顺便吧Monobehaviour生命周期 重新看了一遍。  Q:当在monobehaciour中调用了StartCoroutine后（此时yield return new WaitForSeconds(5f)）monobehaciour脚本的enable置程false，那么协程后面的代码还会执行吗？  其实我的第一反应是不执行了，但是经过测试发现，我是错的。 先看一下正">
+<meta name="twitter:image" content="http://ophmqxrq8.bkt.clouddn.com/201809031759.png">
 
 
 
@@ -129,13 +133,13 @@
 
 
 
-  <link rel="canonical" href="http://kongwz.cn/2018/06/25/Unity-Shader-小记/"/>
+  <link rel="canonical" href="http://kongwz.cn/2018/09/03/Unity-Monobehaviour-Coroutine/"/>
 
 
 
 
 
-  <title>Unity-Shader-小记 | Kelo's blog</title>
+  <title>Unity--Monobehaviour生命周期 & 协程Coroutine | Kelo's blog</title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -274,7 +278,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://kongwz.cn/2018/06/25/Unity-Shader-小记/">
+    <link itemprop="mainEntityOfPage" href="http://kongwz.cn/2018/09/03/Unity-Monobehaviour-Coroutine/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Kelo">
@@ -291,7 +295,7 @@
 
         
         
-          <h2 class="post-title" itemprop="name headline">Unity-Shader-小记</h2>
+          <h2 class="post-title" itemprop="name headline">Unity--Monobehaviour生命周期 & 协程Coroutine</h2>
         
 
         <div class="post-meta">
@@ -303,8 +307,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-25T15:18:33+08:00">
-                2018-06-25
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-03T17:42:40+08:00">
+                2018-09-03
               </time>
             
 
@@ -343,7 +347,7 @@
 
           
           
-             <span id="/2018/06/25/Unity-Shader-小记/" class="leancloud_visitors" data-flag-title="Unity-Shader-小记">
+             <span id="/2018/09/03/Unity-Monobehaviour-Coroutine/" class="leancloud_visitors" data-flag-title="Unity--Monobehaviour生命周期 & 协程Coroutine">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -402,17 +406,23 @@
       
 
       
-        <ul>
-<li>初学Shader记录一下 <strong>float4 tex2D(sampler2D samp, float2 s)</strong></li>
-</ul>
-<p>2D纹理采样，CG内置函数。<br>内部实现分为以下几步： </p>
-<ol>
-<li>用图片的宽高度乘以uv数值，得到像素坐标。widthPixel=samp.x<em>s.x;heightPixel=samp.y</em>s.y; </li>
-<li>因为取到的数值基本上都是带有小数点的，也就是说不是一个整数，这个时候，需要看图片的过滤设置了。也就是Unity3d的图片设置中的Filter Mode。 </li>
-<li>Filter Mode是Point，不过滤，就会取像素点最靠近的整数，也就是四舍五入，得到像素点的坐标，然后出去图片中，这个坐标的颜色。 </li>
-<li>双线性过滤，会取目标像素的附近4个像素，然后进行插值计算，得到平均颜色值，作为最终颜色。适合纹理由小放大过程中，出现的“马赛克”。 </li>
-<li>三线性过滤，在双线性过滤的基础上考虑到了深度LOD，会进行两次双线性过滤，来使不同的LOD等级纹理中，更加平滑的过渡。</li>
-</ol>
+        <p>今天遇到一个问题，记录一下，顺便吧Monobehaviour生命周期 重新看了一遍。</p>
+<blockquote>
+<p>Q:当在monobehaciour中调用了StartCoroutine后（此时yield return new WaitForSeconds(5f)）monobehaciour脚本的enable置程false，那么协程后面的代码还会执行吗？</p>
+</blockquote>
+<p>其实我的第一反应是不执行了，但是经过测试发现，我是错的。</p>
+<p>先看一下正常情况下，协程的执行顺序</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line">using System.Collections;</span><br><span class="line">using System.Collections.Generic;</span><br><span class="line">using UnityEngine;</span><br><span class="line"></span><br><span class="line">public class test1 : MonoBehaviour &#123;</span><br><span class="line"></span><br><span class="line">    private bool startCall = true;</span><br><span class="line">    private bool updateCall = true;</span><br><span class="line">    private bool lateUpdateCall = true;</span><br><span class="line"></span><br><span class="line">    // Use this for initialization</span><br><span class="line">    void Start () &#123;</span><br><span class="line">        if (startCall) &#123;</span><br><span class="line">            Debug.LogError(&quot;Start Begin&quot;);</span><br><span class="line">            StartCoroutine(TestStart());</span><br><span class="line">            Debug.LogError(&quot;Start End&quot;);</span><br><span class="line">            startCall = false;</span><br><span class="line">        &#125;        </span><br><span class="line">    &#125;    </span><br><span class="line"></span><br><span class="line">    private void LateUpdate()</span><br><span class="line">    &#123;</span><br><span class="line">        if (lateUpdateCall) &#123;</span><br><span class="line"></span><br><span class="line">            Debug.LogError(&quot;TestLaterUpdate Begin&quot;);</span><br><span class="line">            StartCoroutine(TestLaterUpdate());</span><br><span class="line">            Debug.LogError(&quot;TestLaterUpdate End&quot;);</span><br><span class="line">            lateUpdateCall = false;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // Update is called once per frame</span><br><span class="line">    void Update () &#123;</span><br><span class="line">        if (updateCall) &#123;</span><br><span class="line">            Debug.LogError(&quot;Update Begin&quot;);</span><br><span class="line">            StartCoroutine(TestUpdate());</span><br><span class="line">            Debug.LogError(&quot;Update End&quot;);</span><br><span class="line">            updateCall = false;</span><br><span class="line">        &#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">    IEnumerator TestStart()</span><br><span class="line">    &#123;</span><br><span class="line">        Debug.LogError(&quot;TestStart  Before&quot;);</span><br><span class="line">        yield return new WaitForSeconds(1);</span><br><span class="line">        Debug.LogError(&quot;TestStart  After&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    IEnumerator TestUpdate()</span><br><span class="line">    &#123;</span><br><span class="line">        Debug.LogError(&quot;TestUpdate  Before&quot;);</span><br><span class="line">        yield return new WaitForSeconds(1);</span><br><span class="line">        Debug.LogError(&quot;TestUpdate  After&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    IEnumerator TestLaterUpdate()</span><br><span class="line">    &#123;</span><br><span class="line">        Debug.LogError(&quot;TestLaterUpdate  Before&quot;);</span><br><span class="line">        yield return new WaitForSeconds(1);</span><br><span class="line">        Debug.LogError(&quot;TestLaterUpdate  After&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<p><img src="http://ophmqxrq8.bkt.clouddn.com/201809031759.png" alt=""></p>
+<p>那么现在改一下代码，在Start中调用完了协程后，将这个monobehaviour的enable置为false，看一下输出结果</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line">using System.Collections;</span><br><span class="line">using System.Collections.Generic;</span><br><span class="line">using UnityEngine;</span><br><span class="line"></span><br><span class="line">public class test1 : MonoBehaviour &#123;</span><br><span class="line"></span><br><span class="line">    private bool startCall = true;</span><br><span class="line">    private bool updateCall = true;</span><br><span class="line">    private bool lateUpdateCall = true;</span><br><span class="line"></span><br><span class="line">    // Use this for initialization</span><br><span class="line">    void Start () &#123;</span><br><span class="line">        if (startCall) &#123;</span><br><span class="line">            Debug.LogError(&quot;Start Begin&quot;);</span><br><span class="line">            StartCoroutine(TestStart());</span><br><span class="line">            Debug.LogError(&quot;Start End&quot;);</span><br><span class="line">            this.enabled = false;</span><br><span class="line">            startCall = false;</span><br><span class="line">        &#125;        </span><br><span class="line">    &#125;    </span><br><span class="line"></span><br><span class="line">    private void LateUpdate()</span><br><span class="line">    &#123;</span><br><span class="line">        if (lateUpdateCall) &#123;</span><br><span class="line"></span><br><span class="line">            Debug.LogError(&quot;TestLaterUpdate Begin&quot;);</span><br><span class="line">            StartCoroutine(TestLaterUpdate());</span><br><span class="line">            Debug.LogError(&quot;TestLaterUpdate End&quot;);</span><br><span class="line">            lateUpdateCall = false;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // Update is called once per frame</span><br><span class="line">    void Update () &#123;</span><br><span class="line">        if (updateCall) &#123;</span><br><span class="line">            Debug.LogError(&quot;Update Begin&quot;);</span><br><span class="line">            StartCoroutine(TestUpdate());</span><br><span class="line">            Debug.LogError(&quot;Update End&quot;);</span><br><span class="line">            updateCall = false;</span><br><span class="line">        &#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">    IEnumerator TestStart()</span><br><span class="line">    &#123;</span><br><span class="line">        Debug.LogError(&quot;TestStart  Before&quot;);</span><br><span class="line">        yield return new WaitForSeconds(1);</span><br><span class="line">        Debug.LogError(&quot;TestStart  After&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    IEnumerator TestUpdate()</span><br><span class="line">    &#123;</span><br><span class="line">        Debug.LogError(&quot;TestUpdate  Before&quot;);</span><br><span class="line">        yield return new WaitForSeconds(1);</span><br><span class="line">        Debug.LogError(&quot;TestUpdate  After&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    IEnumerator TestLaterUpdate()</span><br><span class="line">    &#123;</span><br><span class="line">        Debug.LogError(&quot;TestLaterUpdate  Before&quot;);</span><br><span class="line">        yield return new WaitForSeconds(1);</span><br><span class="line">        Debug.LogError(&quot;TestLaterUpdate  After&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>结果：</p>
+<p><img src="http://ophmqxrq8.bkt.clouddn.com/201809031803.png" alt=""></p>
+<p>也就是说我们在将monobehaviour的enable置程false后并没能终止协程，协程还是在运行，但是如果我们将GameObject的SetActive(false)后协程和monobehaviour和协程都会停止。</p>
+<p>所以monobehaviour的enable是对协程没有影响的</p>
+<p>最后 看一下Unity Monobehaviour的生命周期图</p>
+<p><img src="http://ophmqxrq8.bkt.clouddn.com/o_exeOrder.png" alt=""></p>
 
       
     </div>
@@ -463,7 +473,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Unity-Shader/" rel="tag"># Unity Shader</a>
+            <a href="/tags/Unity/" rel="tag"># Unity</a>
           
         </div>
       
@@ -476,8 +486,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/06/21/Unity-UGUI-0/" rel="next" title="Unity-UGUI">
-                <i class="fa fa-chevron-left"></i> Unity-UGUI
+              <a href="/2018/09/03/Unity-Shader-Specular/" rel="next" title="Unity-Shader(三)高光反射&Blinn-Phong光照模型">
+                <i class="fa fa-chevron-left"></i> Unity-Shader(三)高光反射&Blinn-Phong光照模型
               </a>
             
           </div>
@@ -485,10 +495,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/06/25/Unity-Shader-边缘色/" rel="prev" title="Unity-Shader-边缘色">
-                Unity-Shader-边缘色 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
