@@ -104,7 +104,7 @@
 <meta property="og:image" content="http://ophmqxrq8.bkt.clouddn.com/specular6.png">
 <meta property="og:image" content="http://ophmqxrq8.bkt.clouddn.com/specular4.png">
 <meta property="og:image" content="http://ophmqxrq8.bkt.clouddn.com/specular5.png">
-<meta property="og:updated_time" content="2018-09-03T07:13:29.823Z">
+<meta property="og:updated_time" content="2018-09-03T07:27:34.138Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Unity-Shader(三)高光反射&amp;Blinn-Phong光照模型">
 <meta name="twitter:description" content="先看一下基本光照模型中的高光反射部分的计算公式：  逐顶点光照实现 高光反射">
@@ -471,6 +471,8 @@
 <h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p> 三种类型高光反射的效果对比<br>从左到右分别是 逐顶点高光反射、逐像素高光反射、Blinn-Phong光照模型</p>
 <p><img src="http://ophmqxrq8.bkt.clouddn.com/specular5.png" alt=""></p>
 <p>可以看出，Blinn-Phong模型的高光反射部分看起来更大更亮，在实际渲染中，绝大多数情况也都会选择Blinn-Phong光照模型</p>
+<h3 id="划重点"><a href="#划重点" class="headerlink" title="划重点"></a>划重点</h3><p><strong>使用 normalize(_WorldSpaceLightPos0.xyz);来得到光源方向</strong></p>
+<p><strong>使用 normalize(_WorldSpaceCameraPos.xyz - i.worldPos.xyz);来得到视角方向</strong></p>
 <p><em>本文所写内容参考《UnityShader 入门精要》。</em></p>
 
       
@@ -701,7 +703,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#逐顶点光照实现-高光反射"><span class="nav-number">1.</span> <span class="nav-text">逐顶点光照实现 高光反射</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#逐像素-实现高光反射模型"><span class="nav-number">2.</span> <span class="nav-text">逐像素 实现高光反射模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Blinn-Phong-光照模型"><span class="nav-number">3.</span> <span class="nav-text">Blinn-Phong 光照模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#最后"><span class="nav-number">4.</span> <span class="nav-text">最后</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#逐顶点光照实现-高光反射"><span class="nav-number">1.</span> <span class="nav-text">逐顶点光照实现 高光反射</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#逐像素-实现高光反射模型"><span class="nav-number">2.</span> <span class="nav-text">逐像素 实现高光反射模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Blinn-Phong-光照模型"><span class="nav-number">3.</span> <span class="nav-text">Blinn-Phong 光照模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#最后"><span class="nav-number">4.</span> <span class="nav-text">最后</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#划重点"><span class="nav-number">4.1.</span> <span class="nav-text">划重点</span></a></li></ol></li></ol></div>
             
 
           </div>
