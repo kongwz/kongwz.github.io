@@ -90,22 +90,22 @@
 
 
 
-<meta name="description" content="==本文所有内容针对Unity版本：5.x以后，我用的是2018.2.2f1== AssetBundle打包方式（一）打包设置在Project面板里选中一个资源，然后在Inspector面板中设置这个资源的AssetBundleName  这样以后，这个资源会被打包在一个名字叫Cube（这里是你设置的名字，随意的）AssetBundle中，注意：如果想要将多个资源打包在一个bundle中，那么将多">
+<meta name="description" content="==本文所有内容针对Unity版本：5.x以后，我用的是2018.2.2f1== AssetBundle打包方式（一）打包设置在Project面板里选中一个资源，然后在Inspector面板中设置这个资源的AssetBundleName">
 <meta name="keywords" content="Unity AssetBundle">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Unity-AssetBundle打包">
 <meta property="og:url" content="http://kongwz.cn/2018/09/10/Unity-AssetBundle-Build/index.html">
 <meta property="og:site_name" content="Kelo&#39;s blog">
-<meta property="og:description" content="==本文所有内容针对Unity版本：5.x以后，我用的是2018.2.2f1== AssetBundle打包方式（一）打包设置在Project面板里选中一个资源，然后在Inspector面板中设置这个资源的AssetBundleName  这样以后，这个资源会被打包在一个名字叫Cube（这里是你设置的名字，随意的）AssetBundle中，注意：如果想要将多个资源打包在一个bundle中，那么将多">
+<meta property="og:description" content="==本文所有内容针对Unity版本：5.x以后，我用的是2018.2.2f1== AssetBundle打包方式（一）打包设置在Project面板里选中一个资源，然后在Inspector面板中设置这个资源的AssetBundleName">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://ophmqxrq8.bkt.clouddn.com/BuildAssetBundle1.png">
 <meta property="og:image" content="http://ophmqxrq8.bkt.clouddn.com/BuildAssetBundle2.png">
 <meta property="og:image" content="http://ophmqxrq8.bkt.clouddn.com/BuildAssetBundle3.png">
 <meta property="og:image" content="http://ophmqxrq8.bkt.clouddn.com/BuildAssetBundle4.png">
-<meta property="og:updated_time" content="2018-09-10T04:07:07.953Z">
+<meta property="og:updated_time" content="2018-09-10T04:07:58.254Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Unity-AssetBundle打包">
-<meta name="twitter:description" content="==本文所有内容针对Unity版本：5.x以后，我用的是2018.2.2f1== AssetBundle打包方式（一）打包设置在Project面板里选中一个资源，然后在Inspector面板中设置这个资源的AssetBundleName  这样以后，这个资源会被打包在一个名字叫Cube（这里是你设置的名字，随意的）AssetBundle中，注意：如果想要将多个资源打包在一个bundle中，那么将多">
+<meta name="twitter:description" content="==本文所有内容针对Unity版本：5.x以后，我用的是2018.2.2f1== AssetBundle打包方式（一）打包设置在Project面板里选中一个资源，然后在Inspector面板中设置这个资源的AssetBundleName">
 <meta name="twitter:image" content="http://ophmqxrq8.bkt.clouddn.com/BuildAssetBundle1.png">
 
 
@@ -410,6 +410,7 @@
         <p>==本文所有内容针对Unity版本：5.x以后，我用的是2018.2.2f1==</p>
 <h2 id="AssetBundle打包方式（一）"><a href="#AssetBundle打包方式（一）" class="headerlink" title="AssetBundle打包方式（一）"></a>AssetBundle打包方式（一）</h2><h3 id="打包设置"><a href="#打包设置" class="headerlink" title="打包设置"></a>打包设置</h3><p>在Project面板里选中一个资源，然后在Inspector面板中设置这个资源的AssetBundleName</p>
 <p><img src="http://ophmqxrq8.bkt.clouddn.com/BuildAssetBundle1.png" alt="设置AssetBundleName"></p>
+<a id="more"></a>
 <p>这样以后，这个资源会被打包在一个名字叫Cube（这里是你设置的名字，随意的）AssetBundle中，注意：<strong>如果想要将多个资源打包在一个bundle中，那么将多个资源的AssetBundleName设置成一样的即可</strong>后面的Variant参数是设置Bundle的后缀名字，使用这个参数 可以更方便的进行多分辨率支持。</p>
 <h3 id="打包核心"><a href="#打包核心" class="headerlink" title="打包核心"></a>打包核心</h3><p>打包核心代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">BuildPipeline.BuildAssetBundles(Path, BuildAssetBundleOptions.None, BuildTarget.StandaloneWindows64);</span><br></pre></td></tr></table></figure></p>
 <blockquote>
