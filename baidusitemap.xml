@@ -4,6 +4,26 @@
 
     
   <url>
+    <loc>http://kongwz.cn/2018/09/10/Unity-AssetBundle-Build/</loc>
+    <lastmod>2018-09-10T04:07:07.953Z</lastmod>
+    <data>
+        <display>
+        <title>Unity-AssetBundle打包</title>
+        <pubTime>2018-09-10T04:05:15.000Z</pubTime>
+        
+        <tag>Unity AssetBundle</tag>
+         
+         
+           
+             
+              <breadCrumb title="Unity" url="http://kongwz.cn/categories/Unity/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://kongwz.cn/2018/06/05/Unity-Ugui/</loc>
     <lastmod>2018-09-06T03:53:00.828Z</lastmod>
     <data>
@@ -362,26 +382,6 @@
 
     
   <url>
-    <loc>http://kongwz.cn/2017/05/14/python-1/</loc>
-    <lastmod>2018-06-21T09:18:01.659Z</lastmod>
-    <data>
-        <display>
-        <title>python使用BeautifulSoup爬取pixabay上的图片</title>
-        <pubTime>2017-05-14T14:36:52.000Z</pubTime>
-        
-        <tag>Python</tag>
-         
-         
-           
-             
-              <breadCrumb title="Python" url="http://kongwz.cn/categories/Python/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://kongwz.cn/2017/12/05/huizong/</loc>
     <lastmod>2018-06-21T09:18:01.659Z</lastmod>
     <data>
@@ -395,6 +395,26 @@
            
              
               <breadCrumb title="汇总" url="http://kongwz.cn/categories/%E6%B1%87%E6%80%BB/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://kongwz.cn/2017/05/14/python-1/</loc>
+    <lastmod>2018-06-21T09:18:01.659Z</lastmod>
+    <data>
+        <display>
+        <title>python使用BeautifulSoup爬取pixabay上的图片</title>
+        <pubTime>2017-05-14T14:36:52.000Z</pubTime>
+        
+        <tag>Python</tag>
+         
+         
+           
+             
+              <breadCrumb title="Python" url="http://kongwz.cn/categories/Python/"/>
           
         </display>
     </data>

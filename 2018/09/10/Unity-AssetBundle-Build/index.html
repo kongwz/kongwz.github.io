@@ -74,7 +74,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Unity Shader," />
+  <meta name="keywords" content="Unity AssetBundle," />
 
 
 
@@ -90,18 +90,23 @@
 
 
 
-<meta name="description" content="初学Shader记录一下 float4 tex2D(sampler2D samp, float2 s)  2D纹理采样，CG内置函数。内部实现分为以下几步：   用图片的宽高度乘以uv数值，得到像素坐标。widthPixel=samp.xs.x;heightPixel=samp.ys.y;  因为取到的数值基本上都是带有小数点的，也就是说不是一个整数，这个时候，需要看图片的过滤设置了。也就是Un">
-<meta name="keywords" content="Unity Shader">
+<meta name="description" content="==本文所有内容针对Unity版本：5.x以后，我用的是2018.2.2f1== AssetBundle打包方式（一）打包设置在Project面板里选中一个资源，然后在Inspector面板中设置这个资源的AssetBundleName  这样以后，这个资源会被打包在一个名字叫Cube（这里是你设置的名字，随意的）AssetBundle中，注意：如果想要将多个资源打包在一个bundle中，那么将多">
+<meta name="keywords" content="Unity AssetBundle">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Unity-Shader-小记">
-<meta property="og:url" content="http://kongwz.cn/2018/06/25/Unity-Shader-小记/index.html">
+<meta property="og:title" content="Unity-AssetBundle打包">
+<meta property="og:url" content="http://kongwz.cn/2018/09/10/Unity-AssetBundle-Build/index.html">
 <meta property="og:site_name" content="Kelo&#39;s blog">
-<meta property="og:description" content="初学Shader记录一下 float4 tex2D(sampler2D samp, float2 s)  2D纹理采样，CG内置函数。内部实现分为以下几步：   用图片的宽高度乘以uv数值，得到像素坐标。widthPixel=samp.xs.x;heightPixel=samp.ys.y;  因为取到的数值基本上都是带有小数点的，也就是说不是一个整数，这个时候，需要看图片的过滤设置了。也就是Un">
+<meta property="og:description" content="==本文所有内容针对Unity版本：5.x以后，我用的是2018.2.2f1== AssetBundle打包方式（一）打包设置在Project面板里选中一个资源，然后在Inspector面板中设置这个资源的AssetBundleName  这样以后，这个资源会被打包在一个名字叫Cube（这里是你设置的名字，随意的）AssetBundle中，注意：如果想要将多个资源打包在一个bundle中，那么将多">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-08-24T08:35:03.973Z">
+<meta property="og:image" content="http://ophmqxrq8.bkt.clouddn.com/BuildAssetBundle1.png">
+<meta property="og:image" content="http://ophmqxrq8.bkt.clouddn.com/BuildAssetBundle2.png">
+<meta property="og:image" content="http://ophmqxrq8.bkt.clouddn.com/BuildAssetBundle3.png">
+<meta property="og:image" content="http://ophmqxrq8.bkt.clouddn.com/BuildAssetBundle4.png">
+<meta property="og:updated_time" content="2018-09-10T04:07:07.953Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Unity-Shader-小记">
-<meta name="twitter:description" content="初学Shader记录一下 float4 tex2D(sampler2D samp, float2 s)  2D纹理采样，CG内置函数。内部实现分为以下几步：   用图片的宽高度乘以uv数值，得到像素坐标。widthPixel=samp.xs.x;heightPixel=samp.ys.y;  因为取到的数值基本上都是带有小数点的，也就是说不是一个整数，这个时候，需要看图片的过滤设置了。也就是Un">
+<meta name="twitter:title" content="Unity-AssetBundle打包">
+<meta name="twitter:description" content="==本文所有内容针对Unity版本：5.x以后，我用的是2018.2.2f1== AssetBundle打包方式（一）打包设置在Project面板里选中一个资源，然后在Inspector面板中设置这个资源的AssetBundleName  这样以后，这个资源会被打包在一个名字叫Cube（这里是你设置的名字，随意的）AssetBundle中，注意：如果想要将多个资源打包在一个bundle中，那么将多">
+<meta name="twitter:image" content="http://ophmqxrq8.bkt.clouddn.com/BuildAssetBundle1.png">
 
 
 
@@ -129,13 +134,13 @@
 
 
 
-  <link rel="canonical" href="http://kongwz.cn/2018/06/25/Unity-Shader-小记/"/>
+  <link rel="canonical" href="http://kongwz.cn/2018/09/10/Unity-AssetBundle-Build/"/>
 
 
 
 
 
-  <title>Unity-Shader-小记 | Kelo's blog</title>
+  <title>Unity-AssetBundle打包 | Kelo's blog</title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -274,7 +279,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://kongwz.cn/2018/06/25/Unity-Shader-小记/">
+    <link itemprop="mainEntityOfPage" href="http://kongwz.cn/2018/09/10/Unity-AssetBundle-Build/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Kelo">
@@ -291,7 +296,7 @@
 
         
         
-          <h2 class="post-title" itemprop="name headline">Unity-Shader-小记</h2>
+          <h2 class="post-title" itemprop="name headline">Unity-AssetBundle打包</h2>
         
 
         <div class="post-meta">
@@ -303,8 +308,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-25T15:18:33+08:00">
-                2018-06-25
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-10T12:05:15+08:00">
+                2018-09-10
               </time>
             
 
@@ -343,7 +348,7 @@
 
           
           
-             <span id="/2018/06/25/Unity-Shader-小记/" class="leancloud_visitors" data-flag-title="Unity-Shader-小记">
+             <span id="/2018/09/10/Unity-AssetBundle-Build/" class="leancloud_visitors" data-flag-title="Unity-AssetBundle打包">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -402,17 +407,43 @@
       
 
       
-        <ul>
-<li>初学Shader记录一下 <strong>float4 tex2D(sampler2D samp, float2 s)</strong></li>
-</ul>
-<p>2D纹理采样，CG内置函数。<br>内部实现分为以下几步： </p>
+        <p>==本文所有内容针对Unity版本：5.x以后，我用的是2018.2.2f1==</p>
+<h2 id="AssetBundle打包方式（一）"><a href="#AssetBundle打包方式（一）" class="headerlink" title="AssetBundle打包方式（一）"></a>AssetBundle打包方式（一）</h2><h3 id="打包设置"><a href="#打包设置" class="headerlink" title="打包设置"></a>打包设置</h3><p>在Project面板里选中一个资源，然后在Inspector面板中设置这个资源的AssetBundleName</p>
+<p><img src="http://ophmqxrq8.bkt.clouddn.com/BuildAssetBundle1.png" alt="设置AssetBundleName"></p>
+<p>这样以后，这个资源会被打包在一个名字叫Cube（这里是你设置的名字，随意的）AssetBundle中，注意：<strong>如果想要将多个资源打包在一个bundle中，那么将多个资源的AssetBundleName设置成一样的即可</strong>后面的Variant参数是设置Bundle的后缀名字，使用这个参数 可以更方便的进行多分辨率支持。</p>
+<h3 id="打包核心"><a href="#打包核心" class="headerlink" title="打包核心"></a>打包核心</h3><p>打包核心代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">BuildPipeline.BuildAssetBundles(Path, BuildAssetBundleOptions.None, BuildTarget.StandaloneWindows64);</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>参数</p>
+</blockquote>
 <ol>
-<li>用图片的宽高度乘以uv数值，得到像素坐标。widthPixel=samp.x<em>s.x;heightPixel=samp.y</em>s.y; </li>
-<li>因为取到的数值基本上都是带有小数点的，也就是说不是一个整数，这个时候，需要看图片的过滤设置了。也就是Unity3d的图片设置中的Filter Mode。 </li>
-<li>Filter Mode是Point，不过滤，就会取像素点最靠近的整数，也就是四舍五入，得到像素点的坐标，然后出去图片中，这个坐标的颜色。 </li>
-<li>双线性过滤，会取目标像素的附近4个像素，然后进行插值计算，得到平均颜色值，作为最终颜色。适合纹理由小放大过程中，出现的“马赛克”。 </li>
-<li>三线性过滤，在双线性过滤的基础上考虑到了深度LOD，会进行两次双线性过滤，来使不同的LOD等级纹理中，更加平滑的过渡。</li>
+<li><h5 id="outputPath-bundle目标文件存放目录"><a href="#outputPath-bundle目标文件存放目录" class="headerlink" title="outputPath:bundle目标文件存放目录"></a>outputPath:bundle目标文件存放目录</h5></li>
+<li><h5 id="BuildAssetBundleOptions"><a href="#BuildAssetBundleOptions" class="headerlink" title="BuildAssetBundleOptions"></a>BuildAssetBundleOptions</h5><ul>
+<li><strong>None</strong>：默认的打包方式，采用LZMA压缩方式，会收集依赖。</li>
+<li><strong>UncompressedAssetBundle</strong>：打包不去采用任何压缩方式。</li>
+<li><strong>CollectDependencies</strong>：收集依赖的方式。</li>
+<li><strong>CompleteAssets</strong>：保证资源的完备性，会把该资源的和他所有的依赖打包到依噶AssetBundle中，默认开启。</li>
+<li><strong>DisableWriteTypeTree</strong>：不包含TypeTree类型信息（影响资源版本变化，可以让AssetBundle更小，加载更快；与4.x不同的是，对于移动平台，5.x下默认会将TypeTree信息写入AssetBundle）；</li>
+<li><strong>DeterministicAssetBundle</strong>：为资源维护固定ID（唯一标志AssetBundle，主要用来增量打包），unity5.x默认开启；</li>
+<li><strong>ForceRebuildAssetBundle</strong>:用于强制重打所有AssetBundle文件；</li>
+<li><strong>IgnoreTypeTreeChanges</strong>:判断AssetBundle更新时，是否忽略TypeTree的变化；</li>
+<li><strong>AppendHashToAssetBundleName</strong>：用于将Hash值添加在AssetBundle文件名之后，开启这个选项 可以直接通过文件名来判断哪些Bundle的内容进行了更新（4.x下普遍需要通过比较二进制等方法来判断，但在某些情况下即使内容不变重新打包，Bundle的二进制也会变化）；</li>
+<li><strong>ChunkBasedCompression</strong>：用于使用LZ4格式进行压缩，5.3新增，默认压缩格式为LZMA；</li>
+<li><strong>StrictMode</strong>：任何错误都将导致打包失败；</li>
+<li><strong>DryRunBuild</strong>：</li>
+<li><strong>DisableLoadAssetByFileName</strong>：不允许AB包通过文件名加载资源。</li>
+<li><strong>DisableLoadAssetByFileNameWithExtension</strong>：禁用通过使用扩展名加载AssetBundle。</li>
+</ul>
+</li>
+<li><h5 id="BuildTarget-选择打包平台，我这里是Windows所以选择的StandaloneWindows64，根据自己的情况选择。"><a href="#BuildTarget-选择打包平台，我这里是Windows所以选择的StandaloneWindows64，根据自己的情况选择。" class="headerlink" title="BuildTarget 选择打包平台，我这里是Windows所以选择的StandaloneWindows64，根据自己的情况选择。"></a>BuildTarget 选择打包平台，我这里是Windows所以选择的StandaloneWindows64，根据自己的情况选择。</h5></li>
 </ol>
+<h3 id="打包代码"><a href="#打包代码" class="headerlink" title="打包代码"></a>打包代码</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">using System.Collections;</span><br><span class="line">using System.Collections.Generic;</span><br><span class="line">using UnityEngine;</span><br><span class="line">using UnityEditor;</span><br><span class="line"></span><br><span class="line">public class BundleTools : Editor &#123;</span><br><span class="line"></span><br><span class="line">    //根据设置的AssetBundleName将资源打包</span><br><span class="line">    [MenuItem(&quot;AssetBundle/Create Bundele By Obj Name (Single)&quot;)]</span><br><span class="line">    static void CreateBundleByObjName() &#123;</span><br><span class="line">        Caching.ClearCache();</span><br><span class="line">        string Path = Application.dataPath + &quot;/StreamingAssets&quot;;</span><br><span class="line">        BuildPipeline.BuildAssetBundles(Path, BuildAssetBundleOptions.None, BuildTarget.StandaloneWindows64);</span><br><span class="line">        AssetDatabase.Refresh();</span><br><span class="line">    &#125;</span><br><span class="line">    //根据自己选中的资源，将他们打包到一个AssetBundle中</span><br><span class="line">    [MenuItem(&quot;AssetBundle/Create Bundle By Select (ALL)&quot;)]</span><br><span class="line">    static void CreateBundleBySelect() &#123;</span><br><span class="line">        string Path = Application.dataPath + &quot;/StreamingAssets&quot;;</span><br><span class="line">        AssetBundleBuild[] buildMap = new AssetBundleBuild[1];</span><br><span class="line">        buildMap[0].assetBundleName = &quot;enemyBundle&quot;;</span><br><span class="line">        Object[] selects = Selection.GetFiltered(typeof(Object), SelectionMode.DeepAssets);</span><br><span class="line">        string[] enemyAsset = new string[selects.Length];</span><br><span class="line">        for (int i = 0; i &lt; selects.Length; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            enemyAsset[i] = AssetDatabase.GetAssetPath(selects[i]);</span><br><span class="line">        &#125;</span><br><span class="line">        buildMap[0].assetNames = enemyAsset;</span><br><span class="line">        BuildPipeline.BuildAssetBundles(Path, buildMap, BuildAssetBundleOptions.None, BuildTarget.StandaloneWindows);</span><br><span class="line">        AssetDatabase.Refresh();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>因为这个脚本是继承的Editor所以需要放在Editor目录下，如果没有这个目录，那就手动创建一个吧。</p>
+<h3 id="打包工具"><a href="#打包工具" class="headerlink" title="打包工具"></a>打包工具</h3><p>使用AssetBundleBrowser可以判断是否有同一个资源被打包进了两个Bundle 中，可以方便的进行检查AssetBundle的依赖关系。<br><img src="http://ophmqxrq8.bkt.clouddn.com/BuildAssetBundle2.png" alt=""></p>
+<p>我这里的Cube和Capsule共同使用了一个材质球，然后把他们两个分别打包，并将材质球打包成newbundle，这样Cube和Capsule会共同依赖newbundle，可以看到途中Capsule的依赖关系。如果不将材质球单独打包的话会是这样的情况。<br><img src="http://ophmqxrq8.bkt.clouddn.com/BuildAssetBundle3.png" alt=""></p>
+<p>可以看到两个资源都会引用相同的材质球和贴图，导致资源重复。</p>
+<p>出现这种情况可以，右键AssetBundle名字<em>Add Sibling &gt; New bundle</em>然后选择有黄色叹号的bundle，将他们带黄色叹号的资源拖入新bundle中，就会发现使用相同资源的budle都会多了一个资源依赖<br><img src="http://ophmqxrq8.bkt.clouddn.com/BuildAssetBundle4.png" alt=""></p>
+<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>网上的AssetBundle相关的文章真的是一堆一堆的，我想主要是涉及到Unity的AssetBundle打包机制随着版本的更新，也发生了很大的变化，我现在就想写一套最新的AssetBundle打包加载的流程，所以最近看了很多相关的资料，因为我暂时还没有机会去在工作中接触AssetBundle相关的任务，所以自己慢慢摸索吧，争取早日写出来，不至于以后工作中用到的话忙手忙脚。</p>
+<p>写的不对的地方，希望大家不吝赐教。</p>
 
       
     </div>
@@ -463,7 +494,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Unity-Shader/" rel="tag"># Unity Shader</a>
+            <a href="/tags/Unity-AssetBundle/" rel="tag"># Unity AssetBundle</a>
           
         </div>
       
@@ -476,8 +507,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/06/21/Unity-UGUI-0/" rel="next" title="Unity-UGUI">
-                <i class="fa fa-chevron-left"></i> Unity-UGUI
+              <a href="/2018/09/03/Unity-Monobehaviour-Coroutine/" rel="next" title="Unity--Monobehaviour生命周期 & 协程Coroutine">
+                <i class="fa fa-chevron-left"></i> Unity--Monobehaviour生命周期 & 协程Coroutine
               </a>
             
           </div>
@@ -485,10 +516,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/06/25/Unity-Shader-边缘色/" rel="prev" title="Unity-Shader-边缘色">
-                Unity-Shader-边缘色 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -539,8 +566,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/head.png"
@@ -627,6 +663,22 @@
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#AssetBundle打包方式（一）"><span class="nav-number">1.</span> <span class="nav-text">AssetBundle打包方式（一）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#打包设置"><span class="nav-number">1.1.</span> <span class="nav-text">打包设置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#打包核心"><span class="nav-number">1.2.</span> <span class="nav-text">打包核心</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#outputPath-bundle目标文件存放目录"><span class="nav-number">1.2.0.1.</span> <span class="nav-text">outputPath:bundle目标文件存放目录</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#BuildAssetBundleOptions"><span class="nav-number">1.2.0.2.</span> <span class="nav-text">BuildAssetBundleOptions</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#BuildTarget-选择打包平台，我这里是Windows所以选择的StandaloneWindows64，根据自己的情况选择。"><span class="nav-number">1.2.0.3.</span> <span class="nav-text">BuildTarget 选择打包平台，我这里是Windows所以选择的StandaloneWindows64，根据自己的情况选择。</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#打包代码"><span class="nav-number">1.3.</span> <span class="nav-text">打包代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#打包工具"><span class="nav-number">1.4.</span> <span class="nav-text">打包工具</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#最后"><span class="nav-number">2.</span> <span class="nav-text">最后</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
