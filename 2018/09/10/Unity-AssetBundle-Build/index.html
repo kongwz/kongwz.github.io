@@ -90,22 +90,22 @@
 
 
 
-<meta name="description" content="==本文所有内容针对Unity版本：5.x以后，我用的是2018.2.2f1== AssetBundle打包方式（一）打包设置在Project面板里选中一个资源，然后在Inspector面板中设置这个资源的AssetBundleName">
+<meta name="description" content="本文所有内容针对Unity版本：5.x以后，我用的是2018.2.2f1  AssetBundle打包方式（一）打包设置在Project面板里选中一个资源，然后在Inspector面板中设置这个资源的AssetBundleName">
 <meta name="keywords" content="Unity AssetBundle">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Unity-AssetBundle打包">
 <meta property="og:url" content="http://kongwz.cn/2018/09/10/Unity-AssetBundle-Build/index.html">
 <meta property="og:site_name" content="Kelo&#39;s blog">
-<meta property="og:description" content="==本文所有内容针对Unity版本：5.x以后，我用的是2018.2.2f1== AssetBundle打包方式（一）打包设置在Project面板里选中一个资源，然后在Inspector面板中设置这个资源的AssetBundleName">
+<meta property="og:description" content="本文所有内容针对Unity版本：5.x以后，我用的是2018.2.2f1  AssetBundle打包方式（一）打包设置在Project面板里选中一个资源，然后在Inspector面板中设置这个资源的AssetBundleName">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://ophmqxrq8.bkt.clouddn.com/BuildAssetBundle1.png">
 <meta property="og:image" content="http://ophmqxrq8.bkt.clouddn.com/BuildAssetBundle2.png">
 <meta property="og:image" content="http://ophmqxrq8.bkt.clouddn.com/BuildAssetBundle3.png">
 <meta property="og:image" content="http://ophmqxrq8.bkt.clouddn.com/BuildAssetBundle4.png">
-<meta property="og:updated_time" content="2018-09-10T04:07:58.254Z">
+<meta property="og:updated_time" content="2018-09-12T09:18:32.245Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Unity-AssetBundle打包">
-<meta name="twitter:description" content="==本文所有内容针对Unity版本：5.x以后，我用的是2018.2.2f1== AssetBundle打包方式（一）打包设置在Project面板里选中一个资源，然后在Inspector面板中设置这个资源的AssetBundleName">
+<meta name="twitter:description" content="本文所有内容针对Unity版本：5.x以后，我用的是2018.2.2f1  AssetBundle打包方式（一）打包设置在Project面板里选中一个资源，然后在Inspector面板中设置这个资源的AssetBundleName">
 <meta name="twitter:image" content="http://ophmqxrq8.bkt.clouddn.com/BuildAssetBundle1.png">
 
 
@@ -407,7 +407,9 @@
       
 
       
-        <p>==本文所有内容针对Unity版本：5.x以后，我用的是2018.2.2f1==</p>
+        <blockquote>
+<p>本文所有内容针对Unity版本：5.x以后，我用的是2018.2.2f1</p>
+</blockquote>
 <h2 id="AssetBundle打包方式（一）"><a href="#AssetBundle打包方式（一）" class="headerlink" title="AssetBundle打包方式（一）"></a>AssetBundle打包方式（一）</h2><h3 id="打包设置"><a href="#打包设置" class="headerlink" title="打包设置"></a>打包设置</h3><p>在Project面板里选中一个资源，然后在Inspector面板中设置这个资源的AssetBundleName</p>
 <p><img src="http://ophmqxrq8.bkt.clouddn.com/BuildAssetBundle1.png" alt="设置AssetBundleName"></p>
 <a id="more"></a>
@@ -443,6 +445,38 @@
 <p>我这里的Cube和Capsule共同使用了一个材质球，然后把他们两个分别打包，并将材质球打包成newbundle，这样Cube和Capsule会共同依赖newbundle，可以看到途中Capsule的依赖关系。如果不将材质球单独打包的话会是这样的情况。<br><img src="http://ophmqxrq8.bkt.clouddn.com/BuildAssetBundle3.png" alt=""></p>
 <p>可以看到两个资源都会引用相同的材质球和贴图，导致资源重复。</p>
 <p>出现这种情况可以，右键AssetBundle名字<em>Add Sibling &gt; New bundle</em>然后选择有黄色叹号的bundle，将他们带黄色叹号的资源拖入新bundle中，就会发现使用相同资源的budle都会多了一个资源依赖<br><img src="http://ophmqxrq8.bkt.clouddn.com/BuildAssetBundle4.png" alt=""></p>
+<h3 id="打包策略"><a href="#打包策略" class="headerlink" title="打包策略"></a>打包策略</h3><p>Unity5.x 已经更新了 很多有关打包相关的功能，其中就有一项，可以自动收集依赖打包，所以在打包的时候就可以有两种策略</p>
+<ol>
+<li>给每一个资源设置AssetBundleName，这样每个资源都会生成一个AssetBundle文件</li>
+<li>将资源归类设置AssetBundleName，这样打包会生成依赖相对集中的AssetBundle文件</li>
+</ol>
+<p>第一种方式，会造成很多文件，担心会造成加载速度变慢（联想一下电脑在拷贝同样大小的一千个小文件Or一个压缩包，自然是压缩包速度快），所以针对依赖打包 需要根据游戏定制一套策略。</p>
+<ul>
+<li>Shader文件、字体，单独打包，进游戏加载并常住内存</li>
+<li>将音频/动画控制器/动画/大的背景贴图、图集等不需要实例化的Prefab、存储配置设置/数据等相关的Prefab单独打包成AssetBundle。</li>
+<li>依赖打包</li>
+</ul>
+<p>对于依赖打包，如果有多个资源引用相同的一个资源，那么最好将这个被引用的资源单独打包，这样可以避免这个资源被同时打包到不同AssetBundle中造成资源冗余。</p>
+<ol>
+<li>根据文件夹打一个整体Bundle，特殊的文件夹内所有的内容打成一个Bundle，比如Shader文件夹，策划配置文件，模型组合等</li>
+<li>文件夹内所有文件各设置一个AssetBundleName，然后各自打一个包</li>
+<li></li>
+</ol>
+<p><strong>注意</strong>：为了避免资源冗余需要写的一些工具</p>
+<ul>
+<li>给该文件夹下所有文件设置单独的AssetBundleName工具</li>
+<li>检查资源冗余的工具（主要是检查资源的引用情况）当我们给特定文件夹下的文件都单独打Bundle的时候，有可能存在资源冗余，在打完Bundle后可以用来检查，如果父类被引用了两次，子类也被引用了两次的话那么子类可以不单独打包。    <em>比如只有模型A和模型B都用了材质C，材质C只用了图片D。这时候，我们检查所有依赖时，会发现材质C和图片D的引用次数都是2，因为检查依赖的方法会把依赖拆分得最细，材质C和图片D都单独列出来了。实际上我们不想把图片D拆分出来，只需要单独打包材质C包含图片D就够了。于是在获得了大于1的所有资源列表之后，我们还需要做一个遍历，看看其中有没有像刚才材质C和图片D一样互相包含的情况，如果有，剔除掉。</em></li>
+</ul>
+<blockquote>
+<p>针对打包，需要根据游戏需求来设计，比如有的团队几乎把所有资源都打成了Bundle，有的只把美术资源和Shader还有策划的配置文件打包了， 而游戏里的UIPrefab 并没有打包成Bundle（可能是没有做热更新）。</p>
+</blockquote>
+<h3 id="用脚本设置资源的AssetBundleName"><a href="#用脚本设置资源的AssetBundleName" class="headerlink" title="用脚本设置资源的AssetBundleName"></a>用脚本设置资源的AssetBundleName</h3><p>这里使用了网友<a href="https://blog.csdn.net/u012740992/article/details/79371986" target="_blank" rel="noopener">漫漫之间n</a>的轮子，如果有兴趣可以改一下，实现用来筛选打包后资源是否存在冗余的情况。<br>思路主要是遍历文件夹下所有文件，然后查找它的引用，并设置一个引用数量的阈值，主要分为以下的情况：</p>
+<ul>
+<li>引用个数为0—&gt;直接设置AssetBundleName</li>
+<li>引用个数n大于零小于阈值—&gt;不设置AssetBundleName（会有n-1个资源冗余，为了减少AssetBundle的数量，酌情定制阈值）</li>
+<li>引用数量大于阈值—&gt;给资源单独设置AssetBundleName，避免出现资源出现大量冗余的情况。</li>
+</ul>
+<p>代码就不贴出来了，上面<a href="https://blog.csdn.net/u012740992/article/details/79371986" target="_blank" rel="noopener">漫漫之间n</a>已经写的很清楚了，有兴趣的话可以看看。</p>
 <h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>网上的AssetBundle相关的文章真的是一堆一堆的，我想主要是涉及到Unity的AssetBundle打包机制随着版本的更新，也发生了很大的变化，我现在就想写一套最新的AssetBundle打包加载的流程，所以最近看了很多相关的资料，因为我暂时还没有机会去在工作中接触AssetBundle相关的任务，所以自己慢慢摸索吧，争取早日写出来，不至于以后工作中用到的话忙手忙脚。</p>
 <p>写的不对的地方，希望大家不吝赐教。</p>
 
@@ -674,7 +708,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#AssetBundle打包方式（一）"><span class="nav-number">1.</span> <span class="nav-text">AssetBundle打包方式（一）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#打包设置"><span class="nav-number">1.1.</span> <span class="nav-text">打包设置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#打包核心"><span class="nav-number">1.2.</span> <span class="nav-text">打包核心</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#outputPath-bundle目标文件存放目录"><span class="nav-number">1.2.0.1.</span> <span class="nav-text">outputPath:bundle目标文件存放目录</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#BuildAssetBundleOptions"><span class="nav-number">1.2.0.2.</span> <span class="nav-text">BuildAssetBundleOptions</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#BuildTarget-选择打包平台，我这里是Windows所以选择的StandaloneWindows64，根据自己的情况选择。"><span class="nav-number">1.2.0.3.</span> <span class="nav-text">BuildTarget 选择打包平台，我这里是Windows所以选择的StandaloneWindows64，根据自己的情况选择。</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#打包代码"><span class="nav-number">1.3.</span> <span class="nav-text">打包代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#打包工具"><span class="nav-number">1.4.</span> <span class="nav-text">打包工具</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#最后"><span class="nav-number">2.</span> <span class="nav-text">最后</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#AssetBundle打包方式（一）"><span class="nav-number">1.</span> <span class="nav-text">AssetBundle打包方式（一）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#打包设置"><span class="nav-number">1.1.</span> <span class="nav-text">打包设置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#打包核心"><span class="nav-number">1.2.</span> <span class="nav-text">打包核心</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#outputPath-bundle目标文件存放目录"><span class="nav-number">1.2.0.1.</span> <span class="nav-text">outputPath:bundle目标文件存放目录</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#BuildAssetBundleOptions"><span class="nav-number">1.2.0.2.</span> <span class="nav-text">BuildAssetBundleOptions</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#BuildTarget-选择打包平台，我这里是Windows所以选择的StandaloneWindows64，根据自己的情况选择。"><span class="nav-number">1.2.0.3.</span> <span class="nav-text">BuildTarget 选择打包平台，我这里是Windows所以选择的StandaloneWindows64，根据自己的情况选择。</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#打包代码"><span class="nav-number">1.3.</span> <span class="nav-text">打包代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#打包工具"><span class="nav-number">1.4.</span> <span class="nav-text">打包工具</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#打包策略"><span class="nav-number">1.5.</span> <span class="nav-text">打包策略</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#用脚本设置资源的AssetBundleName"><span class="nav-number">1.6.</span> <span class="nav-text">用脚本设置资源的AssetBundleName</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#最后"><span class="nav-number">2.</span> <span class="nav-text">最后</span></a></li></ol></div>
             
 
           </div>
