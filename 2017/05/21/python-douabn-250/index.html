@@ -98,12 +98,12 @@
 <meta property="og:site_name" content="Kelo&#39;s blog">
 <meta property="og:description" content="使用工具 python 3.6bs4 BeautifulSoupxlwt (用于保存到本地Excel)Chrome  代码">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://ophmqxrq8.bkt.clouddn.com/douban1.png">
-<meta property="og:updated_time" content="2018-06-21T09:18:01.660Z">
+<meta property="og:image" content="https://blogimages-1253307164.cos.ap-shanghai.myqcloud.com/douban1.png">
+<meta property="og:updated_time" content="2019-05-29T09:27:47.843Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="爬取豆瓣电影版Top250">
 <meta name="twitter:description" content="使用工具 python 3.6bs4 BeautifulSoupxlwt (用于保存到本地Excel)Chrome  代码">
-<meta name="twitter:image" content="http://ophmqxrq8.bkt.clouddn.com/douban1.png">
+<meta name="twitter:image" content="https://blogimages-1253307164.cos.ap-shanghai.myqcloud.com/douban1.png">
 
 
 
@@ -409,7 +409,7 @@
 </blockquote>
 <h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><a id="more"></a>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">import requests</span><br><span class="line">from bs4 import BeautifulSoup</span><br><span class="line">import xlwt</span><br><span class="line"></span><br><span class="line">workbook=xlwt.Workbook(encoding=<span class="string">'utf-8'</span>)</span><br><span class="line">booksheet=workbook.add_sheet(<span class="string">'Sheet 1'</span>,cell_overwrite_ok=True)</span><br><span class="line"></span><br><span class="line">def init_url():</span><br><span class="line">	DATA=((<span class="string">'电影名字'</span>,<span class="string">'评分'</span>,<span class="string">'是否可以播放'</span>,<span class="string">'链接'</span>,<span class="string">'标题'</span>),)</span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> range(0,250,25):</span><br><span class="line">		url = <span class="string">'https://movie.douban.com/top250?start=&#123;&#125;&amp;filter='</span>.format(i) </span><br><span class="line">		<span class="built_in">print</span>(url)</span><br><span class="line">		res = requests.get(url)</span><br><span class="line">		res.encoding = <span class="string">'utf-8'</span></span><br><span class="line">		soup = BeautifulSoup(res.text,<span class="string">'html.parser'</span>)</span><br><span class="line">		DATA += get_url_data(soup)</span><br><span class="line">	create_exl(DATA)</span><br><span class="line">		</span><br><span class="line">def get_url_data(soup):</span><br><span class="line">	newdata=()</span><br><span class="line">	<span class="keyword">for</span> data <span class="keyword">in</span> soup.select(<span class="string">'.info'</span>):</span><br><span class="line">		<span class="keyword">if</span> len(data.select(<span class="string">'.hd'</span>)) &gt; 0:</span><br><span class="line">			name =data.select(<span class="string">'a'</span>)[0].text.split(<span class="string">' '</span>)[0].split(<span class="string">'\n'</span>)[1]</span><br><span class="line">			pingfen = data.select(<span class="string">'.rating_num'</span>)[0].text.strip() </span><br><span class="line">			canplay = <span class="string">''</span></span><br><span class="line">			<span class="keyword">if</span> len(data.select(<span class="string">'.playable'</span>)) &gt; 0:</span><br><span class="line">				canplay = data.select(<span class="string">'.playable'</span>)[0].text.rstrip()		</span><br><span class="line">			link = data.select(<span class="string">'a'</span>)[0][<span class="string">'href'</span>]</span><br><span class="line">			biaoti = <span class="string">''</span></span><br><span class="line">			<span class="keyword">if</span> len(data.select(<span class="string">'.inq'</span>)) &gt; 0:</span><br><span class="line">				biaoti = data.select(<span class="string">'.inq'</span>)[0].text</span><br><span class="line">			newdata += ((str(name),str(pingfen),str(canplay),str(link),biaoti),)</span><br><span class="line">	<span class="built_in">return</span> newdata	</span><br><span class="line">	</span><br><span class="line">def create_exl(DATA):</span><br><span class="line">	<span class="keyword">for</span> i,row <span class="keyword">in</span> enumerate(DATA):</span><br><span class="line">		<span class="keyword">for</span> j,col <span class="keyword">in</span> enumerate(row):</span><br><span class="line">			booksheet.write(i,j,col)</span><br><span class="line">	workbook.save(<span class="string">'douban_Top250.xls'</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(init_url())</span><br></pre></td></tr></table></figure>
-<h3 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h3><p><img src="http://ophmqxrq8.bkt.clouddn.com/douban1.png" alt="爬取结果"></p>
+<h3 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h3><p><img src="https://blogimages-1253307164.cos.ap-shanghai.myqcloud.com/douban1.png" alt="爬取结果"></p>
 
       
     </div>
@@ -669,7 +669,7 @@
         <div class="copyright" >
   
   &copy; 
-  <span itemprop="copyrightYear">2018</span>
+  <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

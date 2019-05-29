@@ -98,12 +98,12 @@
 <meta property="og:site_name" content="Kelo&#39;s blog">
 <meta property="og:description" content="有的时候，我们爬取网页的时候，会出现403错误，因为这些网页为了防止别人恶意采集信息，所以进行了一些反爬虫的设置。 那我们就没办法了吗？当然不会！ Herders 属性我们先来做个测试，爬取CSDN博客,随便找一个博客123import urllib.requesturl = &quot;http://blog.csdn.net/hurmishine/article/details/71708030&quot;fil">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://ophmqxrq8.bkt.clouddn.com/herders.png">
-<meta property="og:updated_time" content="2018-06-21T09:18:01.660Z">
+<meta property="og:image" content="https://blogimages-1253307164.cos.ap-shanghai.myqcloud.com/herders.png">
+<meta property="og:updated_time" content="2019-05-29T09:27:38.906Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="python爬虫模拟浏览器的两种方法">
 <meta name="twitter:description" content="有的时候，我们爬取网页的时候，会出现403错误，因为这些网页为了防止别人恶意采集信息，所以进行了一些反爬虫的设置。 那我们就没办法了吗？当然不会！ Herders 属性我们先来做个测试，爬取CSDN博客,随便找一个博客123import urllib.requesturl = &quot;http://blog.csdn.net/hurmishine/article/details/71708030&quot;fil">
-<meta name="twitter:image" content="http://ophmqxrq8.bkt.clouddn.com/herders.png">
+<meta name="twitter:image" content="https://blogimages-1253307164.cos.ap-shanghai.myqcloud.com/herders.png">
 
 
 
@@ -411,7 +411,7 @@
 <p>爬取结果<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">urllib.error.HTTPError: HTTP Error 403: Forbidden</span><br></pre></td></tr></table></figure></p>
 <p>这就说明CSDN做了一些设置，来防止别人恶意爬取信息</p>
 <p>所以接下来，我们需要让爬虫模拟成浏览器<br>任意打开一个网页，比如打开<em>百度</em>,然后按F12，此时会出现一个窗口，我们切换到Network标签页，然后点击刷新网站，选中弹出框左侧的“www.baidu.com”，即下图所示：</p>
-<p><img src="http://ophmqxrq8.bkt.clouddn.com/herders.png" alt="找到User-Agent信息"></p>
+<p><img src="https://blogimages-1253307164.cos.ap-shanghai.myqcloud.com/herders.png" alt="找到User-Agent信息"></p>
 <p>往下拖动 我们会看到“User-Agent”字样的一串信息，没错 这就是我们想要的东西。我们将其复制下来。<br>此时我们得到的信息是：”Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36”<br>接下来我们可以用两种方式来模拟浏览器访问网页。</p>
 <h3 id="方法1：使用build-opener-修改报头"><a href="#方法1：使用build-opener-修改报头" class="headerlink" title="方法1：使用build_opener()修改报头"></a>方法1：使用build_opener()修改报头</h3><p>由于urlopen()不支持一些HTTP的高级功能，所以我们需要修改报头。可以使用urllib.request.build_opener()进行，我们修改一下上面的代码：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">import urllib.request</span><br><span class="line">url = <span class="string">"http://blog.csdn.net/hurmishine/article/details/71708030"</span></span><br><span class="line">headers = (<span class="string">"User-Agent"</span>,<span class="string">"Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36"</span>)</span><br><span class="line">opener = urllib.request.build_opener()</span><br><span class="line">opener.addheaders = [headers]</span><br><span class="line">data = opener.open(url).<span class="built_in">read</span>()</span><br><span class="line"><span class="built_in">print</span>(data)</span><br></pre></td></tr></table></figure></p>
 <p>上面代码中我们先定义一个变量headers来储存User-Agent信息，定义的格式是<strong>(“User-Agent”,具体信息)</strong><br>具体信息我们上面已经获取到了，这个信息获取一次即可，以后爬取其他网站也可以用，所以我们可以保存下来，不用每次都F12去找了。</p>
@@ -680,7 +680,7 @@
         <div class="copyright" >
   
   &copy; 
-  <span itemprop="copyrightYear">2018</span>
+  <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

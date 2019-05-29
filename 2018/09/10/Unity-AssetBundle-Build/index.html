@@ -98,15 +98,15 @@
 <meta property="og:site_name" content="Kelo&#39;s blog">
 <meta property="og:description" content="本文所有内容针对Unity版本：5.x以后，我用的是2018.2.2f1  AssetBundle打包方式（一）打包设置在Project面板里选中一个资源，然后在Inspector面板中设置这个资源的AssetBundleName">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://ophmqxrq8.bkt.clouddn.com/BuildAssetBundle1.png">
-<meta property="og:image" content="http://ophmqxrq8.bkt.clouddn.com/BuildAssetBundle2.png">
-<meta property="og:image" content="http://ophmqxrq8.bkt.clouddn.com/BuildAssetBundle3.png">
-<meta property="og:image" content="http://ophmqxrq8.bkt.clouddn.com/BuildAssetBundle4.png">
-<meta property="og:updated_time" content="2018-09-12T09:18:32.245Z">
+<meta property="og:image" content="https://blogimages-1253307164.cos.ap-shanghai.myqcloud.com/BuildAssetBundle1.png">
+<meta property="og:image" content="https://blogimages-1253307164.cos.ap-shanghai.myqcloud.com/BuildAssetBundle2.png">
+<meta property="og:image" content="https://blogimages-1253307164.cos.ap-shanghai.myqcloud.com/BuildAssetBundle3.png">
+<meta property="og:image" content="https://blogimages-1253307164.cos.ap-shanghai.myqcloud.com/BuildAssetBundle4.png">
+<meta property="og:updated_time" content="2019-05-29T09:27:54.504Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Unity-AssetBundle打包">
 <meta name="twitter:description" content="本文所有内容针对Unity版本：5.x以后，我用的是2018.2.2f1  AssetBundle打包方式（一）打包设置在Project面板里选中一个资源，然后在Inspector面板中设置这个资源的AssetBundleName">
-<meta name="twitter:image" content="http://ophmqxrq8.bkt.clouddn.com/BuildAssetBundle1.png">
+<meta name="twitter:image" content="https://blogimages-1253307164.cos.ap-shanghai.myqcloud.com/BuildAssetBundle1.png">
 
 
 
@@ -411,7 +411,7 @@
 <p>本文所有内容针对Unity版本：5.x以后，我用的是2018.2.2f1</p>
 </blockquote>
 <h2 id="AssetBundle打包方式（一）"><a href="#AssetBundle打包方式（一）" class="headerlink" title="AssetBundle打包方式（一）"></a>AssetBundle打包方式（一）</h2><h3 id="打包设置"><a href="#打包设置" class="headerlink" title="打包设置"></a>打包设置</h3><p>在Project面板里选中一个资源，然后在Inspector面板中设置这个资源的AssetBundleName</p>
-<p><img src="http://ophmqxrq8.bkt.clouddn.com/BuildAssetBundle1.png" alt="设置AssetBundleName"></p>
+<p><img src="https://blogimages-1253307164.cos.ap-shanghai.myqcloud.com/BuildAssetBundle1.png" alt="设置AssetBundleName"></p>
 <a id="more"></a>
 <p>这样以后，这个资源会被打包在一个名字叫Cube（这里是你设置的名字，随意的）AssetBundle中，注意：<strong>如果想要将多个资源打包在一个bundle中，那么将多个资源的AssetBundleName设置成一样的即可</strong>后面的Variant参数是设置Bundle的后缀名字，使用这个参数 可以更方便的进行多分辨率支持。</p>
 <h3 id="打包核心"><a href="#打包核心" class="headerlink" title="打包核心"></a>打包核心</h3><p>打包核心代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">BuildPipeline.BuildAssetBundles(Path, BuildAssetBundleOptions.None, BuildTarget.StandaloneWindows64);</span><br></pre></td></tr></table></figure></p>
@@ -441,10 +441,10 @@
 </ol>
 <h3 id="打包代码"><a href="#打包代码" class="headerlink" title="打包代码"></a>打包代码</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">using System.Collections;</span><br><span class="line">using System.Collections.Generic;</span><br><span class="line">using UnityEngine;</span><br><span class="line">using UnityEditor;</span><br><span class="line"></span><br><span class="line">public class BundleTools : Editor &#123;</span><br><span class="line"></span><br><span class="line">    //根据设置的AssetBundleName将资源打包</span><br><span class="line">    [MenuItem(&quot;AssetBundle/Create Bundele By Obj Name (Single)&quot;)]</span><br><span class="line">    static void CreateBundleByObjName() &#123;</span><br><span class="line">        Caching.ClearCache();</span><br><span class="line">        string Path = Application.dataPath + &quot;/StreamingAssets&quot;;</span><br><span class="line">        BuildPipeline.BuildAssetBundles(Path, BuildAssetBundleOptions.None, BuildTarget.StandaloneWindows64);</span><br><span class="line">        AssetDatabase.Refresh();</span><br><span class="line">    &#125;</span><br><span class="line">    //根据自己选中的资源，将他们打包到一个AssetBundle中</span><br><span class="line">    [MenuItem(&quot;AssetBundle/Create Bundle By Select (ALL)&quot;)]</span><br><span class="line">    static void CreateBundleBySelect() &#123;</span><br><span class="line">        string Path = Application.dataPath + &quot;/StreamingAssets&quot;;</span><br><span class="line">        AssetBundleBuild[] buildMap = new AssetBundleBuild[1];</span><br><span class="line">        buildMap[0].assetBundleName = &quot;enemyBundle&quot;;</span><br><span class="line">        Object[] selects = Selection.GetFiltered(typeof(Object), SelectionMode.DeepAssets);</span><br><span class="line">        string[] enemyAsset = new string[selects.Length];</span><br><span class="line">        for (int i = 0; i &lt; selects.Length; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            enemyAsset[i] = AssetDatabase.GetAssetPath(selects[i]);</span><br><span class="line">        &#125;</span><br><span class="line">        buildMap[0].assetNames = enemyAsset;</span><br><span class="line">        BuildPipeline.BuildAssetBundles(Path, buildMap, BuildAssetBundleOptions.None, BuildTarget.StandaloneWindows);</span><br><span class="line">        AssetDatabase.Refresh();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>因为这个脚本是继承的Editor所以需要放在Editor目录下，如果没有这个目录，那就手动创建一个吧。</p>
-<h3 id="打包工具"><a href="#打包工具" class="headerlink" title="打包工具"></a>打包工具</h3><p>使用AssetBundleBrowser可以判断是否有同一个资源被打包进了两个Bundle 中，可以方便的进行检查AssetBundle的依赖关系。<br><img src="http://ophmqxrq8.bkt.clouddn.com/BuildAssetBundle2.png" alt=""></p>
-<p>我这里的Cube和Capsule共同使用了一个材质球，然后把他们两个分别打包，并将材质球打包成newbundle，这样Cube和Capsule会共同依赖newbundle，可以看到途中Capsule的依赖关系。如果不将材质球单独打包的话会是这样的情况。<br><img src="http://ophmqxrq8.bkt.clouddn.com/BuildAssetBundle3.png" alt=""></p>
+<h3 id="打包工具"><a href="#打包工具" class="headerlink" title="打包工具"></a>打包工具</h3><p>使用AssetBundleBrowser可以判断是否有同一个资源被打包进了两个Bundle 中，可以方便的进行检查AssetBundle的依赖关系。<br><img src="https://blogimages-1253307164.cos.ap-shanghai.myqcloud.com/BuildAssetBundle2.png" alt=""></p>
+<p>我这里的Cube和Capsule共同使用了一个材质球，然后把他们两个分别打包，并将材质球打包成newbundle，这样Cube和Capsule会共同依赖newbundle，可以看到途中Capsule的依赖关系。如果不将材质球单独打包的话会是这样的情况。<br><img src="https://blogimages-1253307164.cos.ap-shanghai.myqcloud.com/BuildAssetBundle3.png" alt=""></p>
 <p>可以看到两个资源都会引用相同的材质球和贴图，导致资源重复。</p>
-<p>出现这种情况可以，右键AssetBundle名字<em>Add Sibling &gt; New bundle</em>然后选择有黄色叹号的bundle，将他们带黄色叹号的资源拖入新bundle中，就会发现使用相同资源的budle都会多了一个资源依赖<br><img src="http://ophmqxrq8.bkt.clouddn.com/BuildAssetBundle4.png" alt=""></p>
+<p>出现这种情况可以，右键AssetBundle名字<em>Add Sibling &gt; New bundle</em>然后选择有黄色叹号的bundle，将他们带黄色叹号的资源拖入新bundle中，就会发现使用相同资源的budle都会多了一个资源依赖<br><img src="https://blogimages-1253307164.cos.ap-shanghai.myqcloud.com/BuildAssetBundle4.png" alt=""></p>
 <h3 id="打包策略"><a href="#打包策略" class="headerlink" title="打包策略"></a>打包策略</h3><p>Unity5.x 已经更新了 很多有关打包相关的功能，其中就有一项，可以自动收集依赖打包，所以在打包的时候就可以有两种策略</p>
 <ol>
 <li>给每一个资源设置AssetBundleName，这样每个资源都会生成一个AssetBundle文件</li>
@@ -738,7 +738,7 @@
         <div class="copyright" >
   
   &copy; 
-  <span itemprop="copyrightYear">2018</span>
+  <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

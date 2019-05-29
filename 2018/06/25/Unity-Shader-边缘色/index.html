@@ -98,13 +98,13 @@
 <meta property="og:site_name" content="Kelo&#39;s blog">
 <meta property="og:description" content="边缘着色。代码控制改变颜色和控制开关先看代码  Shader 代码">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://ophmqxrq8.bkt.clouddn.com/bianyuanse.gif">
-<meta property="og:image" content="http://ophmqxrq8.bkt.clouddn.com/bianyuanse1.gif">
-<meta property="og:updated_time" content="2018-08-24T08:35:38.476Z">
+<meta property="og:image" content="https://blogimages-1253307164.cos.ap-shanghai.myqcloud.com/bianyuanse.gif">
+<meta property="og:image" content="https://blogimages-1253307164.cos.ap-shanghai.myqcloud.com/bianyuanse1.gif">
+<meta property="og:updated_time" content="2019-05-29T09:28:30.930Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Unity-Shader-边缘色">
 <meta name="twitter:description" content="边缘着色。代码控制改变颜色和控制开关先看代码  Shader 代码">
-<meta name="twitter:image" content="http://ophmqxrq8.bkt.clouddn.com/bianyuanse.gif">
+<meta name="twitter:image" content="https://blogimages-1253307164.cos.ap-shanghai.myqcloud.com/bianyuanse.gif">
 
 
 
@@ -412,8 +412,8 @@
 <p>saturate函数（saturate(x)的作用是如果x取值小于0，则返回值为0。如果x取值大于1，则返回值为1。若x在0到1之间，则直接返回x的值</p>
 <p>C# 代码</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">void Update()</span><br><span class="line">  &#123;</span><br><span class="line">      <span class="keyword">if</span> (Input.GetKeyDown(KeyCode.K)) &#123;</span><br><span class="line">          obj.GetComponent&lt;MeshRenderer&gt;().material.SetInt(<span class="string">"_ShowRimColor"</span>, 0);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">if</span> (Input.GetKeyUp(KeyCode.K))</span><br><span class="line">      &#123;</span><br><span class="line">          obj.GetComponent&lt;MeshRenderer&gt;().material.SetInt(<span class="string">"_ShowRimColor"</span>, 1);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">if</span> (Input.GetKeyDown(KeyCode.R))</span><br><span class="line">      &#123;</span><br><span class="line">          obj.GetComponent&lt;MeshRenderer&gt;().material.SetColor(<span class="string">"_RimColor"</span>, Color.red);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">if</span> (Input.GetKeyDown(KeyCode.Y))</span><br><span class="line">      &#123;</span><br><span class="line">          obj.GetComponent&lt;MeshRenderer&gt;().material.SetColor(<span class="string">"_RimColor"</span>, Color.yellow);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">if</span> (Input.GetKeyDown(KeyCode.B))</span><br><span class="line">      &#123;</span><br><span class="line">          obj.GetComponent&lt;MeshRenderer&gt;().material.SetColor(<span class="string">"_RimColor"</span>, Color.blue);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">if</span> (Input.GetKeyDown(KeyCode.G))</span><br><span class="line">      &#123;</span><br><span class="line">          obj.GetComponent&lt;MeshRenderer&gt;().material.SetColor(<span class="string">"_RimColor"</span>, Color.green);</span><br><span class="line">      &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
-<h3 id="先看一下关闭打开效果图"><a href="#先看一下关闭打开效果图" class="headerlink" title="先看一下关闭打开效果图"></a>先看一下关闭打开效果图</h3><p><img src="http://ophmqxrq8.bkt.clouddn.com/bianyuanse.gif" alt="效果"></p>
-<h3 id="代码控制颜色"><a href="#代码控制颜色" class="headerlink" title="代码控制颜色"></a>代码控制颜色</h3><p><img src="http://ophmqxrq8.bkt.clouddn.com/bianyuanse1.gif" alt="效果"></p>
+<h3 id="先看一下关闭打开效果图"><a href="#先看一下关闭打开效果图" class="headerlink" title="先看一下关闭打开效果图"></a>先看一下关闭打开效果图</h3><p><img src="https://blogimages-1253307164.cos.ap-shanghai.myqcloud.com/bianyuanse.gif" alt="效果"></p>
+<h3 id="代码控制颜色"><a href="#代码控制颜色" class="headerlink" title="代码控制颜色"></a>代码控制颜色</h3><p><img src="https://blogimages-1253307164.cos.ap-shanghai.myqcloud.com/bianyuanse1.gif" alt="效果"></p>
 
       
     </div>
@@ -673,7 +673,7 @@
         <div class="copyright" >
   
   &copy; 
-  <span itemprop="copyrightYear">2018</span>
+  <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
